@@ -1,0 +1,21 @@
+modLoader = "javafml"
+loaderVersion = "[33,)"
+license = "LGPLv3"
+issueTrackerURL = ""
+[[mods]]
+modId = "modid"
+version = "1.0"
+displayName = "Mod ID"
+displayURL = ""
+logoFile = "icon.png"
+credits = ""
+authors = "Corgi Taco"
+description = '''
+Description
+'''
+[[dependencies.modid]]
+modId = "forge"
+mandatory = true
+versionRange = "[33.0.0,)"
+ordering = "NONE"
+side = "BOTH"
