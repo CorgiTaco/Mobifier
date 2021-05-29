@@ -56,7 +56,7 @@ public class AttributesModifierConfigSerializer implements JsonDeserializer<Attr
             }
 
             ResourceLocation entityTypeID = tryParse(key.toLowerCase());
-            if (entityTypeID != null && !Registry.ENTITY_TYPE.containsKey(entityTypeID)) {
+            if (entityTypeID != null && !Registry.ENTITY_TYPE.keySet().contains(entityTypeID)) {
                 Mobifier.LOGGER.error("\"" + key + "\" is not a valid entity ID. Skipping entry...");
                 continue;
             }
@@ -87,7 +87,7 @@ public class AttributesModifierConfigSerializer implements JsonDeserializer<Attr
                 String attributeKey = attributeEntry.getKey().toLowerCase();
                 ResourceLocation attributeID = tryParse(attributeKey);
 
-                if (attributeID != null && !Registry.ATTRIBUTE.containsKey(attributeID)) {
+                if (attributeID != null && !Registry.ATTRIBUTE.keySet().contains(attributeID)) {
                     Mobifier.LOGGER.error("\"" + attributeKey + "\" is not a valid attribute ID. Skipping attribute entry...");
                     continue;
                 }

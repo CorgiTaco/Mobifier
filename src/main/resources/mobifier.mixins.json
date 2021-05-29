@@ -6,7 +6,7 @@
   "refmap": "mobifier.refmap.json",
   "mixins": [
     "MixinLivingEntity",
-    "MixinMinecraftServer",
+    "MixinMinecraftServer"
   ],
   "client": [
   ],
