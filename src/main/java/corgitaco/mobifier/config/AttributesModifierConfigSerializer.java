@@ -1,7 +1,10 @@
 package corgitaco.mobifier.config;
 
 import com.google.gson.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.AttributesModifier;
+import corgitaco.mobifier.CodecUtil;
 import corgitaco.mobifier.Mobifier;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceArrayMap;
@@ -144,10 +147,43 @@ public class AttributesModifierConfigSerializer implements JsonDeserializer<Attr
 
     public static class Holder {
 
-        private final Reference2ReferenceArrayMap<EntityType<?>, EnumMap<Difficulty, Reference2DoubleArrayMap<Attribute>>> map;
+        public static final Codec<Holder> CODEC = RecordCodecBuilder.create((builder) -> {
+           return builder.group(Codec.unboundedMap(CodecUtil.ENTITY_TYPE_CODEC, Codec.unboundedMap(Codec.STRING, Codec.unboundedMap(CodecUtil.ATTRIBUTE_CODEC, Codec.DOUBLE))).fieldOf("mobifier").forGetter((holder) -> {
+               Map<EntityType<?>, Map<String, Map<Attribute, Double>>> serializableMap = new HashMap<>();
+               holder.map.forEach(((entityType, difficultyReference2DoubleArrayMapEnumMap) -> {
+                   Map<String, Map<Attribute, Double>> serializableMap1 = new HashMap<>();
+
+                   difficultyReference2DoubleArrayMapEnumMap.forEach((difficulty, attributeReference2DoubleArrayMap) -> {
+                       serializableMap1.put(difficulty.name(), attributeReference2DoubleArrayMap);
+                   });
+                   serializableMap.put(entityType, serializableMap1);
+               }));
+               return serializableMap;
+           })).apply(builder, Holder::new);
+        });
+
+        private final Reference2ReferenceArrayMap<EntityType<?>, EnumMap<Difficulty, Reference2DoubleArrayMap<Attribute>>> map = new Reference2ReferenceArrayMap<>();
+
+        public Holder(Map<EntityType<?>, Map<String, Map<Attribute, Double>>> map) {
+            map.forEach(((entityType, difficultyMapMap) -> {
+                EnumMap<Difficulty, Reference2DoubleArrayMap<Attribute>> difficultyMap = new EnumMap<>(Difficulty.class);
+
+                difficultyMapMap.forEach((difficulty, attributeDoubleMap) -> {
+                    Difficulty difficulty1 = Difficulty.valueOf(difficulty);
+                    Reference2DoubleArrayMap<Attribute> attributeDoubleMap1 = new Reference2DoubleArrayMap<>();
+                    attributeDoubleMap.forEach(((attribute, aDouble) -> {
+                        attributeDoubleMap1.put(attribute, aDouble.doubleValue());
+                    }));
+                    difficultyMap.put(difficulty1, attributeDoubleMap1);
+                });
+
+                this.map.put(entityType, difficultyMap);
+            }));
+        }
+
 
         public Holder(Reference2ReferenceArrayMap<EntityType<?>, EnumMap<Difficulty, Reference2DoubleArrayMap<Attribute>>> map) {
-            this.map = map;
+            this.map.putAll(map);
         }
 
         public Reference2ReferenceArrayMap<EntityType<?>, EnumMap<Difficulty, Reference2DoubleArrayMap<Attribute>>> getMap() {
