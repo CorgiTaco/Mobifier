@@ -33,8 +33,14 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "dropFromLootTable", at = @At(value = "RETURN"))
     private void modifyLootTable(DamageSource damageSource, boolean bl, CallbackInfo ci) {
-        ResourceLocation entityLootTableAdditions = new ResourceLocation(this.getLootTable().getNamespace(), this.getLootTable().getPath() + "_" + ((LivingEntity) (Object) this).level.getDifficulty().name().toLowerCase());
-        ResourceLocation classificationLootTable = new ResourceLocation(this.getLootTable().getNamespace(), "entities/" + ((LivingEntity) (Object) this).getType().getCategory().toString().toLowerCase() + "_" + ((LivingEntity) (Object) this).level.getDifficulty().name().toLowerCase());
+        ResourceLocation lootTable = this.getLootTable();
+
+        if (lootTable == null) {
+            return;
+        }
+
+        ResourceLocation entityLootTableAdditions = new ResourceLocation(lootTable.getNamespace(), lootTable.getPath() + "_" + ((LivingEntity) (Object) this).level.getDifficulty().name().toLowerCase());
+        ResourceLocation classificationLootTable = new ResourceLocation(lootTable.getNamespace(), "entities/" + ((LivingEntity) (Object) this).getType().getCategory().toString().toLowerCase() + "_" + ((LivingEntity) (Object) this).level.getDifficulty().name().toLowerCase());
         LootTableManager lootTables = ((LivingEntity) (Object) this).level.getServer().getLootTables();
 
         if (lootTables.getIds().contains(entityLootTableAdditions)) {
