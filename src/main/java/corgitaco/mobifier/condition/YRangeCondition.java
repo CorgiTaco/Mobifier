@@ -3,6 +3,7 @@ package corgitaco.mobifier.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
@@ -10,13 +11,15 @@ import java.util.List;
 //TODO: Use vertical anchors in 1.18.
 public class YRangeCondition implements Condition {
     public static final Codec<YRangeCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(YRange.CODEC.listOf().fieldOf("yRanges").forGetter(yRangeCondition -> yRangeCondition.yRanges)).apply(builder, YRangeCondition::new);
+        return builder.group(YRange.CODEC.listOf().fieldOf("yRanges").forGetter(yRangeCondition -> yRangeCondition.yRanges), BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(yRangeCondition -> yRangeCondition.offset)).apply(builder, YRangeCondition::new);
     });
 
     private final List<YRange> yRanges;
+    private final BlockPos offset;
 
-    public YRangeCondition(List<YRange> yRanges) {
+    public YRangeCondition(List<YRange> yRanges, BlockPos offset) {
         this.yRanges = yRanges;
+        this.offset = offset;
         if (yRanges.isEmpty()) {
             throw new IllegalArgumentException("No yRanges were specified.");
         }
@@ -26,7 +29,7 @@ public class YRangeCondition implements Condition {
     @Override
     public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeath) {
         for (YRange yRange : yRanges) {
-            if (!yRange.isInBetween(entity.blockPosition().getY())) {
+            if (!yRange.isInBetween(entity.blockPosition().offset(this.offset).getY())) {
                 return false;
             }
         }
