@@ -11,6 +11,6 @@ public class MobifierRegistry {
 
     public static final RegistryKey<Registry<Codec<? extends Condition>>> CONDITION_KEY = RegistryKey.createRegistryKey(new ResourceLocation(Mobifier.MOD_ID, "condition"));
 
-    public static final Registry<Codec<? extends Condition>> DEATH_CONDITION = RegistryAccess.invokeRegisterSimple(CONDITION_KEY, () -> Condition.CODEC);
+    public static final Registry<Codec<? extends Condition>> CONDITION = RegistryAccess.invokeRegisterSimple(CONDITION_KEY, () -> Condition.CODEC);
 
 }
