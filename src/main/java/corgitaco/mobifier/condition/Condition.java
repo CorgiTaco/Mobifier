@@ -35,5 +35,6 @@ public interface Condition {
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "blocks_are"), BlocksAreCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "precipitation_at"), PrecipitationAtCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "see_sky_at"), SeeSkyAtCondition.CODEC);
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "chance"), ChanceCondition.CODEC);
     }
 }
