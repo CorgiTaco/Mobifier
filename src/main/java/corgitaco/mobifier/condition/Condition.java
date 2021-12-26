@@ -28,5 +28,6 @@ public interface Condition {
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "on_death"), DieCondition.CODEC);
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_has"), LastInjurerHasCondition.CODEC);
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_by_type_has"), LastInjurerByTypeHasCondition.CODEC);
+        Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "y_range"), YRangeCondition.CODEC);
     }
 }
