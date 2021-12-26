@@ -29,5 +29,9 @@ public interface Condition {
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_has"), LastInjurerHasCondition.CODEC);
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_by_type_has"), LastInjurerByTypeHasCondition.CODEC);
         Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "y_range"), YRangeCondition.CODEC);
+        Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "inside_structure"), YRangeCondition.CODEC);
+        Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "player_inventory_has"), PlayerInventoryCondition.CODEC);
+        Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "blockstates_are"), BlockStatesAreCondition.CODEC);
+        Registry.register(MobifierRegistry.DEATH_CONDITION, new ResourceLocation(Mobifier.MOD_ID, "blocks_are"), BlocksAreCondition.CODEC);
     }
 }

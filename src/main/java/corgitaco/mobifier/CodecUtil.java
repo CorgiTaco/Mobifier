@@ -2,6 +2,7 @@ package corgitaco.mobifier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -35,6 +36,7 @@ public class CodecUtil {
     public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Difficulty.byName(s.toUpperCase())), Enum::name);
     public static final Codec<RegistryKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(RegistryKey.create(Registry.BIOME_REGISTRY, resourceLocation)), RegistryKey::location);
     public static final Codec<Item> ITEM_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ITEM.get(resourceLocation)), Registry.ITEM::getKey);
+    public static final Codec<Block> BLOCK_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.BLOCK.get(resourceLocation)), Registry.BLOCK::getKey);
     public static final Codec<Enchantment> ENCHANTMENT_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ENCHANTMENT.get(resourceLocation)), Registry.ENCHANTMENT::getKey);
     public static final Codec<Hand> HAND_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Hand.valueOf(s.toUpperCase())), Hand::name);
 
