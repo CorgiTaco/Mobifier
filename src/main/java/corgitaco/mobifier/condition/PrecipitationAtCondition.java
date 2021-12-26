@@ -9,7 +9,7 @@ import net.minecraft.world.server.ServerWorld;
 public class PrecipitationAtCondition implements Condition {
 
     public static Codec<PrecipitationAtCondition> CODEC = RecordCodecBuilder.create(builder -> {
-       return builder.group(BlockPos.CODEC.fieldOf("offset").forGetter(precipitationAtCondition -> precipitationAtCondition.offset), Codec.BOOL.optionalFieldOf("snow", false).forGetter(precipitationAtCondition -> {
+       return builder.group(BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(precipitationAtCondition -> precipitationAtCondition.offset), Codec.BOOL.optionalFieldOf("snow", false).forGetter(precipitationAtCondition -> {
             return precipitationAtCondition.snow;
         })).apply(builder, PrecipitationAtCondition::new);
     });

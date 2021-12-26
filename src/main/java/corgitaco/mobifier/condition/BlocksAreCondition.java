@@ -46,7 +46,7 @@ public class BlocksAreCondition implements Condition {
 
     public static class BlockIs {
         public static final Codec<BlockIs> CODEC = RecordCodecBuilder.create(builder -> {
-            return builder.group(BlockPos.CODEC.fieldOf("offset").forGetter(blockIs -> blockIs.offset),
+            return builder.group(BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(blockIs -> blockIs.offset),
                     CodecUtil.BLOCK_CODEC.listOf().fieldOf("is").forGetter(blockIs -> new ArrayList<>(blockIs.is))).apply(builder, BlockIs::new);
         });
 

@@ -9,7 +9,7 @@ import net.minecraft.world.server.ServerWorld;
 public class SeeSkyAtCondition implements Condition {
 
     public static Codec<SeeSkyAtCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(BlockPos.CODEC.fieldOf("offset").forGetter(precipitationAtCondition -> precipitationAtCondition.offset)).apply(builder, SeeSkyAtCondition::new);
+        return builder.group(BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(precipitationAtCondition -> precipitationAtCondition.offset)).apply(builder, SeeSkyAtCondition::new);
     });
 
     private final BlockPos offset;
