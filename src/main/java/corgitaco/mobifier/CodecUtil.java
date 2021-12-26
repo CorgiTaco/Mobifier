@@ -2,10 +2,16 @@ package corgitaco.mobifier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.item.Item;
+import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.biome.Biome;
 
 public class CodecUtil {
 
@@ -25,4 +31,12 @@ public class CodecUtil {
             return DataResult.error(e.getMessage());
         }
     }, Registry.ATTRIBUTE::getKey);
+
+    public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Difficulty.byName(s.toUpperCase())), Enum::name);
+    public static final Codec<RegistryKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(RegistryKey.create(Registry.BIOME_REGISTRY, resourceLocation)), RegistryKey::location);
+    public static final Codec<Item> ITEM_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ITEM.get(resourceLocation)), Registry.ITEM::getKey);
+    public static final Codec<Enchantment> ENCHANTMENT_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ENCHANTMENT.get(resourceLocation)), Registry.ENCHANTMENT::getKey);
+    public static final Codec<Hand> HAND_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Hand.valueOf(s.toUpperCase())), Hand::name);
+
+
 }

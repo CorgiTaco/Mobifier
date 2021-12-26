@@ -1,5 +1,6 @@
 package corgitaco.mobifier;
 
+import corgitaco.mobifier.condition.Condition;
 import corgitaco.mobifier.network.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,8 @@ public class Mobifier {
     public Mobifier() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::commonSetup);
+        Condition.register();
+        NewConfig.getConfig(true);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
