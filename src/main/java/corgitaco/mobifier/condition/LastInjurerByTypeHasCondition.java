@@ -35,7 +35,7 @@ public class LastInjurerByTypeHasCondition implements Condition {
             List<Condition> conditions = injurerConditions.get(lastHurtByMobType);
 
             for (Condition condition : conditions) {
-                if (!condition.passes(world, entity, isDeath)) {
+                if (!condition.passes(world, lastHurtByMob, isDeath)) {
                     return false;
                 }
             }

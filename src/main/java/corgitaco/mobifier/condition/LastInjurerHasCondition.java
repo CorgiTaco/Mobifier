@@ -30,7 +30,7 @@ public class LastInjurerHasCondition implements Condition {
         }
 
         for (Condition condition : injurerConditions) {
-            if (!condition.passes(world, entity, isDeath)) {
+            if (!condition.passes(world, lastHurtByMob, isDeath)) {
                 return false;
             }
         }
