@@ -1,8 +1,9 @@
 package corgitaco.mobifier.mixin;
 
-import corgitaco.mobifier.common.MobMobifier;
 import corgitaco.mobifier.Mobifier;
+import corgitaco.mobifier.common.MobMobifier;
 import corgitaco.mobifier.common.MobifierConfig;
+import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -53,7 +54,7 @@ public abstract class MixinLivingEntity extends Entity {
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
-                    totalValue *= mobMobifier.getXpMultiplier();
+                    totalValue = mobMobifier.getXpMultiplier().apply(totalValue);
                 }
             }
         }
@@ -69,14 +70,17 @@ public abstract class MixinLivingEntity extends Entity {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
                     if (this.getAttributes().hasAttribute(attribute)) {
-                        cir.setReturnValue(cir.getReturnValueD() * mobMobifier.getAttributesMultipliers().getOrDefault(attribute, 1.0D));
+                        final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
+                        if (attributesMultipliers.containsKey(attribute)) {
+                            cir.setReturnValue(cir.getReturnValueD() * attributesMultipliers.get(attribute).apply(cir.getReturnValue()));
+                        }
                     }
                 }
             }
         }
     }
 
-    @Inject(method = "dropFromLootTable", at = @At(value = "RETURN"))
+    @Inject(method = "dropFromLootTable", at = @At(value = "HEAD"), cancellable = true)
     private void modifyLootTable(DamageSource damageSource, boolean bl, CallbackInfo ci) {
         Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
         LootTableManager lootTables = this.level.getServer().getLootTables();
@@ -87,7 +91,12 @@ public abstract class MixinLivingEntity extends Entity {
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (!mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                    // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
+                    if (mobMobifier.isDropDefaultTable()) {
+                        ci.cancel();
+                    }
+
                     StringBuilder unknownTablesBuilder = new StringBuilder();
                     for (ResourceLocation lootTableLocation : mobMobifier.getDroppedTables()) {
                         if (lootTables.getIds().contains(lootTableLocation)) {

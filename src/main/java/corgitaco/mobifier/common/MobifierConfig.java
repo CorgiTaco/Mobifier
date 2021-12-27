@@ -11,6 +11,7 @@ import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.condition.*;
 import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleComparator;
+import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.ItemStackCheck;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -48,9 +49,9 @@ public class MobifierConfig {
 
     public static final MobifierConfig DEFAULT = new MobifierConfig(Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
-            list.add(new MobMobifier(2, Util.make(new Object2DoubleOpenHashMap<>(), map1 -> {
+            list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
                 for (Attribute attribute : Registry.ATTRIBUTE) {
-                    map1.put(attribute, 6);
+                    map1.put(attribute, new DoubleModifier("*5"));
                 }
 
             }), false, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
