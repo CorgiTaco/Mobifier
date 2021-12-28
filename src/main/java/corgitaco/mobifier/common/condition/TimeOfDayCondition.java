@@ -24,10 +24,13 @@ public class TimeOfDayCondition implements Condition {
         if (timesOfDay.isEmpty()) {
             throw new IllegalArgumentException("No times of day were specified.");
         }
-
         this.timesOfDay = timesOfDay;
+        for (LongPair longPair : this.timesOfDay) {
+            if (longPair.getVal1() > this.dayLength || longPair.getVal1() < 0 || longPair.getVal2() > this.dayLength || longPair.getVal2() < 0 || longPair.getVal1() > longPair.getVal2()) {
+                throw new IllegalArgumentException("minTime & maxTime must be between 0 & " + dayLength + " and minTime cannot be greater than maxTime! Pair: \"" + longPair + "\" failed.");
+            }
+        }
     }
-
 
     @Override
     public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {

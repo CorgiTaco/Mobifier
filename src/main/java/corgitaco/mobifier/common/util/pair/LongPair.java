@@ -30,4 +30,9 @@ public class LongPair {
             return builder.group(Codec.LONG.fieldOf(val1Name).forGetter(longPair -> longPair.val1), Codec.LONG.fieldOf(val2Name).forGetter(longPair -> longPair.val2)).apply(builder, LongPair::new);
         });
     }
+
+    @Override
+    public String toString() {
+        return val1 + " - " + val2;
+    }
 }
