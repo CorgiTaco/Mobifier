@@ -66,12 +66,16 @@ public class InsideStructureCondition implements Condition {
                         if (piece.getBoundingBox().isInside(entityPosition)) {
                             ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(true, true));
                             return true;
+                        } else {
+                            ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(structureStart.getBoundingBox().isInside(entityPosition), false));
                         }
                     }
                 } else {
                     if (structureStart.getBoundingBox().isInside(entityPosition)) {
                         ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(true, false));
                         return true;
+                    } else {
+                        ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(false, true));
                     }
                 }
             }
