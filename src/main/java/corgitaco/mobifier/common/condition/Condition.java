@@ -37,5 +37,7 @@ public interface Condition {
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "see_sky_at"), SeeSkyAtCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "chance"), ChanceCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "lunar_phase"), LunarPhaseCondition.CODEC);
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "time_of_day"), TimeOfDayCondition.CODEC);
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "every_amount_of_days"), EveryAmountOfDaysCondition.CODEC);
     }
 }

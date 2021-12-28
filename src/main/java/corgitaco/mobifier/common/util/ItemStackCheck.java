@@ -2,6 +2,7 @@ package corgitaco.mobifier.common.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import corgitaco.mobifier.common.util.comparator.DoubleComparator;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;

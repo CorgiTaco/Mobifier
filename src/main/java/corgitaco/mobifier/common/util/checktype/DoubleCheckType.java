@@ -1,9 +1,9 @@
-package corgitaco.mobifier.common.util;
+package corgitaco.mobifier.common.util.checktype;
 
 import java.util.function.BiPredicate;
 
 @SuppressWarnings("UnnecessaryUnboxing")
-public enum NumericalCheck {
+public enum DoubleCheckType {
     GREATER_THAN(((number, number2) -> number.doubleValue() > number2.doubleValue())),
     GREATER_THAN_OR_EQUAL(((number, number2) -> number.doubleValue() >= number2.doubleValue())),
     LESSER_THAN(((number, number2) -> number.doubleValue() < number2.doubleValue())),
@@ -12,7 +12,7 @@ public enum NumericalCheck {
 
     private final BiPredicate<Double, Double> numberBiPredicate;
 
-    NumericalCheck(BiPredicate<Double, Double> numberBiPredicate) {
+    DoubleCheckType(BiPredicate<Double, Double> numberBiPredicate) {
         this.numberBiPredicate = numberBiPredicate;
     }
 

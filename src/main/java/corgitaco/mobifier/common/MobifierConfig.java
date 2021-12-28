@@ -10,7 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.condition.*;
 import corgitaco.mobifier.common.util.CodecUtil;
-import corgitaco.mobifier.common.util.DoubleComparator;
+import corgitaco.mobifier.common.util.comparator.DoubleComparator;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.ItemStackCheck;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;

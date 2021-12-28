@@ -3,7 +3,7 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
-import corgitaco.mobifier.common.util.DoubleComparator;
+import corgitaco.mobifier.common.util.comparator.DoubleComparator;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
