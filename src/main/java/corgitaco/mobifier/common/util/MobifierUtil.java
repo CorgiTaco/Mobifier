@@ -6,11 +6,12 @@ import java.util.Arrays;
 
 public class MobifierUtil {
 
-    public static EntityClassification tryParseMonsterCategory(String categoryString) {
-        try {
-            return EntityClassification.byName(categoryString.toLowerCase());
-        } catch (Exception e) {
-            throw new IllegalArgumentException(String.format("\"%s\" is not a valid monster category. Valid monster categories: %s\n %s", categoryString, Arrays.toString(Arrays.stream(EntityClassification.values()).map(EntityClassification::getName).toArray()), e));
+    public static EntityClassification tryParseMobCategory(String categoryString) {
+        final EntityClassification mobCategory = EntityClassification.byName(categoryString.toLowerCase());
+        if (mobCategory == null) {
+            throw new IllegalArgumentException(String.format("\"%s\" is not a valid monster category. Valid monster categories: %s", categoryString, Arrays.toString(Arrays.stream(EntityClassification.values()).map(EntityClassification::getName).toArray())));
+        } else {
+            return mobCategory;
         }
     }
 }

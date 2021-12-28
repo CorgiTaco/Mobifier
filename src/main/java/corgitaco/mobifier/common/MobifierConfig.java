@@ -11,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.condition.BiomeCategoryCondition;
 import corgitaco.mobifier.common.condition.InDimensionCondition;
-import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.MobifierUtil;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -96,7 +95,7 @@ public class MobifierConfig {
             final String filter = "category/";
             if (key.toLowerCase().startsWith(filter)) {
                 for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
-                    if (entityType.getCategory() == MobifierUtil.tryParseMonsterCategory(key.substring(filter.length()))) {
+                    if (entityType.getCategory() == MobifierUtil.tryParseMobCategory(key.substring(filter.length()))) {
                         result.computeIfAbsent(entityType, (type -> new ArrayList<>())).addAll(value);
                     }
                 }
