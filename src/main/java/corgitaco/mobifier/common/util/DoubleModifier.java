@@ -32,7 +32,7 @@ public class DoubleModifier {
         } else if (s.endsWith("-")) {
             s = s.replaceAll("-", "");
             modifierType = NumericalModifierType.SUBTRACT;
-            this.flip = false;
+            this.flip = true;
         } else if (s.startsWith("+") || s.endsWith("+")) {
             s = s.replaceAll("\\+", "");
             modifierType = NumericalModifierType.ADD;
