@@ -16,33 +16,35 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.Structure;
 
+@SuppressWarnings("deprecation")
 public class CodecUtil {
 
-    public static final Codec<EntityType<?>> ENTITY_TYPE_CODEC = ResourceLocation.CODEC.comapFlatMap(location -> {
-        try {
-            return DataResult.success(Registry.ENTITY_TYPE.getOptional(location).orElseThrow(RuntimeException::new));
-        } catch (Exception e) {
-            return DataResult.error(e.getMessage());
-        }
-    }, Registry.ENTITY_TYPE::getKey);
+    public static final Codec<EntityType<?>> ENTITY_TYPE_CODEC = createLoggedExceptionCodec(Registry.ENTITY_TYPE);
+    public static final Codec<Attribute> ATTRIBUTE_CODEC = createLoggedExceptionCodec(Registry.ATTRIBUTE);
+    public static final Codec<Item> ITEM_CODEC = createLoggedExceptionCodec(Registry.ITEM);
+    public static final Codec<Block> BLOCK_CODEC = createLoggedExceptionCodec(Registry.BLOCK);
+    public static final Codec<Structure<?>> STRUCTURE_CODEC = createLoggedExceptionCodec(Registry.STRUCTURE_FEATURE);
+    public static final Codec<Enchantment> ENCHANTMENT_CODEC = createLoggedExceptionCodec(Registry.ENCHANTMENT);
 
-
-    public static final Codec<Attribute> ATTRIBUTE_CODEC = ResourceLocation.CODEC.comapFlatMap(location -> {
-        try {
-            return DataResult.success(Registry.ATTRIBUTE.getOptional(location).orElseThrow(RuntimeException::new));
-        } catch (Exception e) {
-            return DataResult.error(e.getMessage());
-        }
-    }, Registry.ATTRIBUTE::getKey);
-
-    public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Difficulty.byName(s.toUpperCase())), Enum::name);
     public static final Codec<RegistryKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(RegistryKey.create(Registry.BIOME_REGISTRY, resourceLocation)), RegistryKey::location);
-    public static final Codec<Item> ITEM_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ITEM.get(resourceLocation)), Registry.ITEM::getKey);
-    public static final Codec<Block> BLOCK_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.BLOCK.get(resourceLocation)), Registry.BLOCK::getKey);
-    public static final Codec<Structure<?>> STRUCTURE_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.STRUCTURE_FEATURE.get(resourceLocation)), Registry.STRUCTURE_FEATURE::getKey);
-    public static final Codec<Enchantment> ENCHANTMENT_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ENCHANTMENT.get(resourceLocation)), Registry.ENCHANTMENT::getKey);
-    public static final Codec<Hand> HAND_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Hand.valueOf(s.toUpperCase())), Hand::name);
+
     public static final Codec<EquipmentSlotType> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(EquipmentSlotType.valueOf(s.toUpperCase())), EquipmentSlotType::name);
+    public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Difficulty.byName(s.toUpperCase())), Enum::name);
 
+    public static <T> Codec<T> createLoggedExceptionCodec(Registry<T> registry) {
+        return ResourceLocation.CODEC.comapFlatMap(location -> {
+            final T result = registry.get(location);
 
+            if (result == null) {
+                StringBuilder registryElements = new StringBuilder();
+                for (int i = 0; i < registry.entrySet().size(); i++) {
+                    final T object = registry.byId(i);
+                    registryElements.append(i).append(". \"").append(registry.getKey(object).toString()).append("\"\n");
+                }
+
+                throw new IllegalArgumentException(String.format("\"%s\" is not a valid id in registry: %s.\n Current Registry Values:\n %s", location.toString(), registry.toString(), registryElements.toString()));
+            }
+            return DataResult.success(result);
+        }, registry::getKey);
+    }
 }
