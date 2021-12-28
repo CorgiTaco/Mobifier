@@ -97,11 +97,11 @@ public class MobifierConfig {
             if (key.toLowerCase().startsWith(filter)) {
                 for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
                     if (entityType.getCategory() == MobifierUtil.tryParseMonsterCategory(key.substring(filter.length()))) {
-                        result.put(entityType, value);
+                        result.computeIfAbsent(entityType, (type -> new ArrayList<>())).addAll(value);
                     }
                 }
             } else {
-                result.put(Registry.ENTITY_TYPE.get(new ResourceLocation(key)), value);
+                result.computeIfAbsent(Registry.ENTITY_TYPE.get(new ResourceLocation(key)), (type) -> new ArrayList<>()).addAll(value);
             }
         });
         return DataResult.success(result);
