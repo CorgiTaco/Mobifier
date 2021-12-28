@@ -18,26 +18,30 @@ public interface Condition {
     Codec<? extends Condition> codec();
 
     static void register() {
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "biome"), BiomeCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "biome_category"), BiomeCategoryCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "difficulty"), DifficultyCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "wearing"), WearingCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "has_in_hand"), HasInHandCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "attribute_comparator"), AttributeCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "dimension"), InDimensionCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "is_dead_or_dying"), IsDeadOrDyingCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_has"), LastInjurerHasCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "last_injurer_by_type_has"), LastInjurerByTypeHasCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "y_range"), YRangeCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "inside_structure"), InsideStructureCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "player_inventory_has"), PlayerInventoryCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "blockstates_are"), BlockStatesAreCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "blocks_are"), BlocksAreCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "precipitation_at"), PrecipitationAtCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "see_sky_at"), SeeSkyAtCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "chance"), ChanceCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "lunar_phase"), LunarPhaseCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "time_of_day"), TimeOfDayCondition.CODEC);
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "every_amount_of_days"), EveryAmountOfDaysCondition.CODEC);
+        register("biome", BiomeCondition.CODEC);
+        register("biome_category", BiomeCategoryCondition.CODEC);
+        register("difficulty", DifficultyCondition.CODEC);
+        register("wearing", WearingCondition.CODEC);
+        register("has_in_hand", HasInHandCondition.CODEC);
+        register("attribute_comparator", AttributeCondition.CODEC);
+        register("dimension", InDimensionCondition.CODEC);
+        register("is_dead_or_dying", IsDeadOrDyingCondition.CODEC);
+        register("last_injurer_has", LastInjurerHasCondition.CODEC);
+        register("last_injurer_by_type_has", LastInjurerByTypeHasCondition.CODEC);
+        register("y_range", YRangeCondition.CODEC);
+        register("inside_structure", InsideStructureCondition.CODEC);
+        register("player_inventory_has", PlayerInventoryCondition.CODEC);
+        register("blockstates_are", BlockStatesAreCondition.CODEC);
+        register("blocks_are", BlocksAreCondition.CODEC);
+        register("precipitation_at", PrecipitationAtCondition.CODEC);
+        register("see_sky_at", SeeSkyAtCondition.CODEC);
+        register("chance", ChanceCondition.CODEC);
+        register("lunar_phase", LunarPhaseCondition.CODEC);
+        register("time_of_day", TimeOfDayCondition.CODEC);
+        register("every_amount_of_days", EveryAmountOfDaysCondition.CODEC);
+    }
+
+    static void register(String id, Codec<? extends Condition> codec) {
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, id), codec);
     }
 }
