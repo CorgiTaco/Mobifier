@@ -1,6 +1,8 @@
 package corgitaco.mobifier.common.network;
 
 import corgitaco.mobifier.Mobifier;
+import corgitaco.mobifier.common.network.packet.EntityIsInsideStructureTrackerUpdatePacket;
+import corgitaco.mobifier.common.network.packet.MobifierConfigSyncPacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -19,6 +21,8 @@ public class NetworkHandler {
     );
 
     public static void init() {
+        SIMPLE_CHANNEL.registerMessage(0, MobifierConfigSyncPacket.class, MobifierConfigSyncPacket::writeToPacket, MobifierConfigSyncPacket::readFromPacket, MobifierConfigSyncPacket::handle);
+        SIMPLE_CHANNEL.registerMessage(1, EntityIsInsideStructureTrackerUpdatePacket.class, EntityIsInsideStructureTrackerUpdatePacket::writeToPacket, EntityIsInsideStructureTrackerUpdatePacket::readFromPacket, EntityIsInsideStructureTrackerUpdatePacket::handle);
     }
 
     public static void sendToPlayer(ServerPlayerEntity playerEntity, Object objectToSend) {

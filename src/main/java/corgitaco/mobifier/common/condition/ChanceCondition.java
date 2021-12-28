@@ -3,8 +3,7 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.server.ServerWorld;
-
+import net.minecraft.world.World;
 public class ChanceCondition implements Condition {
 
     public static final Codec<ChanceCondition> CODEC = RecordCodecBuilder.create(builder -> {
@@ -19,7 +18,7 @@ public class ChanceCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         return chance > world.getRandom().nextDouble();
     }
 

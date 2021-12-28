@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class DifficultyCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         return this.isDifficulty.getOrDefault(world.getDifficulty(), false);
     }
 

@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ public class BlocksAreCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         for (BlockIs blockIs : blockStatesAre) {
             BlockPos offsetPos = entity.blockPosition().offset(blockIs.offset);
 

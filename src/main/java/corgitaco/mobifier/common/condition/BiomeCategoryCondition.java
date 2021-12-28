@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,7 @@ public class BiomeCategoryCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         final Biome biome = world.getBiome(entity.blockPosition());
         return biomeCategories.contains(biome.getBiomeCategory());
     }

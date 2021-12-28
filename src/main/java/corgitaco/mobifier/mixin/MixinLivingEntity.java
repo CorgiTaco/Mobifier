@@ -18,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,7 +52,7 @@ public abstract class MixinLivingEntity extends Entity {
         double totalValue = xpOrbReward;
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
                     totalValue = mobMobifier.getXpMultiplier().apply(totalValue);
                 }
             }
@@ -68,7 +67,7 @@ public abstract class MixinLivingEntity extends Entity {
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
                     if (this.getAttributes().hasAttribute(attribute)) {
                         final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
                         if (attributesMultipliers.containsKey(attribute)) {
@@ -91,7 +90,7 @@ public abstract class MixinLivingEntity extends Entity {
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (!mobMobifier.passes((ServerWorld) this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
                     // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
                     if (mobMobifier.isDropDefaultTable()) {
                         ci.cancel();

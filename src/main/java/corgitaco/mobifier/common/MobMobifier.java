@@ -8,18 +8,20 @@ import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MobMobifier {
 
     public static final Codec<MobMobifier> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(DoubleModifier.CODEC.fieldOf("xpMultiplier").forGetter(mobMobifier -> mobMobifier.xpMultiplier),
-                Codec.unboundedMap(CodecUtil.ATTRIBUTE_CODEC, DoubleModifier.CODEC).fieldOf("attributesMultipliers").forGetter(mobMobifier -> mobMobifier.attributesMultipliers),
-                Codec.BOOL.fieldOf("dropDefaultTable").forGetter(mobMobifier -> mobMobifier.dropDefaultTable),
-                ResourceLocation.CODEC.listOf().fieldOf("droppedTables").forGetter(mobMobifier -> mobMobifier.droppedTables),
+        return builder.group(DoubleModifier.CODEC.optionalFieldOf("xpMultiplier", new DoubleModifier("+0.0")).forGetter(mobMobifier -> mobMobifier.xpMultiplier),
+                Codec.unboundedMap(CodecUtil.ATTRIBUTE_CODEC, DoubleModifier.CODEC).optionalFieldOf("attributesMultipliers", new HashMap<>()).forGetter(mobMobifier -> mobMobifier.attributesMultipliers),
+                Codec.BOOL.optionalFieldOf("dropDefaultTable", true).forGetter(mobMobifier -> mobMobifier.dropDefaultTable),
+                ResourceLocation.CODEC.listOf().optionalFieldOf("droppedTables", new ArrayList<>()).forGetter(mobMobifier -> mobMobifier.droppedTables),
                 Condition.CODEC.listOf().fieldOf("conditionsRequiredToPass").forGetter(mobMobifier -> mobMobifier.conditionsRequiredToPass)
         ).apply(builder, MobMobifier::new);
     });
@@ -58,7 +60,7 @@ public class MobMobifier {
         return conditionsRequiredToPass;
     }
 
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         for (Condition requiredToPass : this.conditionsRequiredToPass) {
             if (!requiredToPass.passes(world, entity, isDeadOrDying)) {
                 return false;

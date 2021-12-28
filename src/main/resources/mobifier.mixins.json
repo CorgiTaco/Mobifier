@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mobifier.refmap.json",
   "mixins": [
+    "MixinEntity",
     "MixinLivingEntity",
     "MixinMinecraftServer",
     "MixinPlayerList",

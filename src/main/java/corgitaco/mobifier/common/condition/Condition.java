@@ -6,14 +6,14 @@ import corgitaco.mobifier.common.MobifierRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.function.Function;
 
 public interface Condition {
     Codec<Condition> CODEC = MobifierRegistry.CONDITION.dispatchStable(Condition::codec, Function.identity());
 
-    boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying);
+    boolean passes(World world, LivingEntity entity, boolean isDeadOrDying);
 
     Codec<? extends Condition> codec();
 
@@ -36,5 +36,6 @@ public interface Condition {
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "precipitation_at"), PrecipitationAtCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "see_sky_at"), SeeSkyAtCondition.CODEC);
         Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "chance"), ChanceCondition.CODEC);
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, "lunar_phase"), LunarPhaseCondition.CODEC);
     }
 }

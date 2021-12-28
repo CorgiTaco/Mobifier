@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class WearingCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         for (ItemStack armorSlot : entity.getArmorSlots()) {
             final Item mapKey = armorSlot.getItem();
             if (itemItemStackCheckMap.containsKey(mapKey)) {

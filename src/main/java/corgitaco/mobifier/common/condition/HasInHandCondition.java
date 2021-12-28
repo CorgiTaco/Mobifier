@@ -7,7 +7,7 @@ import corgitaco.mobifier.common.util.ItemStackCheck;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class HasInHandCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         if (handItemsChecksMap.isEmpty()) {
             return false;
         }

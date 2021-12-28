@@ -7,7 +7,7 @@ import corgitaco.mobifier.common.util.DoubleComparator;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class AttributeCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         if (attributeComparator.isEmpty()) {
             return false;
         }

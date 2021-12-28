@@ -13,7 +13,6 @@ import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleComparator;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.ItemStackCheck;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -95,6 +94,9 @@ public class MobifierConfig {
         return INSTANCE;
     }
 
+    public static void setConfigInstance(MobifierConfig config) {
+        INSTANCE = config;
+    }
 
     private static MobifierConfig readConfig() {
         final Path path = FMLPaths.CONFIGDIR.get().resolve(Mobifier.MOD_ID + ".json");

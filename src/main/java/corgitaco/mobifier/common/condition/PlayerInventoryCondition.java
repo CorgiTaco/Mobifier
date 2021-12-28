@@ -8,7 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class PlayerInventoryCondition implements Condition {
     }
 
     @Override
-    public boolean passes(ServerWorld world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
         if (entity instanceof PlayerEntity) {
             for (ItemStack item : ((PlayerEntity) entity).inventory.items) {
                 if (itemItemStackCheckMap.containsKey(item.getItem())) {
