@@ -1,0 +1,103 @@
+package corgitaco.mobifier.common;
+
+import com.google.common.collect.ImmutableList;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import corgitaco.mobifier.Mobifier;
+import corgitaco.mobifier.common.condition.BiomeCategoryCondition;
+import corgitaco.mobifier.common.condition.InDimensionCondition;
+import corgitaco.mobifier.common.util.CodecUtil;
+import corgitaco.mobifier.common.util.DoubleModifier;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.util.Util;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.loading.FMLPaths;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class MobifierConfig {
+
+    public static MobifierConfig INSTANCE = null;
+
+    public static final MobifierConfig DEFAULT = new MobifierConfig(Util.make(new Object2ObjectOpenHashMap<>(), map -> {
+        map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
+            list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+                for (Attribute attribute : Registry.ATTRIBUTE) {
+                    map1.put(attribute, new DoubleModifier("*2"));
+                }
+
+            }), false, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
+                list1.add(new BiomeCategoryCondition(ImmutableList.of(Biome.Category.DESERT)));
+                list1.add(new InDimensionCondition(ImmutableList.of(World.OVERWORLD)));
+            })));
+        }));
+    }));
+
+    public static MobifierConfig getConfig() {
+        return getConfig(false);
+    }
+
+    public static MobifierConfig getConfig(boolean serialize) {
+        if (INSTANCE == null || serialize) {
+            INSTANCE = readConfig();
+        }
+
+        return INSTANCE;
+    }
+
+    public static void setConfigInstance(MobifierConfig config) {
+        INSTANCE = config;
+    }
+
+    private static MobifierConfig readConfig() {
+        final Path path = FMLPaths.CONFIGDIR.get().resolve(Mobifier.MOD_ID + ".json");
+
+        if (!path.toFile().exists()) {
+            JsonElement jsonElement = CODEC.encodeStart(JsonOps.INSTANCE, DEFAULT).result().get();
+
+            try {
+                Files.createDirectories(path.getParent());
+                Files.write(path, new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(jsonElement).getBytes());
+            } catch (IOException e) {
+                Mobifier.LOGGER.error(e.toString());
+            }
+        }
+
+        try {
+            return CODEC.decode(JsonOps.INSTANCE, new JsonParser().parse(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return DEFAULT;
+    }
+
+    public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
+        return builder.group(Codec.unboundedMap(CodecUtil.ENTITY_TYPE_CODEC, MobMobifier.CODEC.listOf()).fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
+        ).apply(builder, MobifierConfig::new);
+    });
+
+    private final Map<EntityType<?>, List<MobMobifier>> mobMobifierMap;
+
+    public MobifierConfig(Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
+        this.mobMobifierMap = mobMobifierMap;
+    }
+
+    public Map<EntityType<?>, List<MobMobifier>> getMobMobifierMap() {
+        return mobMobifierMap;
+    }
+}
