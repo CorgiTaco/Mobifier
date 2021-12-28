@@ -13,7 +13,7 @@ import java.util.Collection;
 public class LunarPhaseCondition implements Condition {
 
     public static final Codec<LunarPhaseCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.INT.listOf().fieldOf("valid_moon_phases").forGetter(lunarPhaseCondition -> new ArrayList<>(lunarPhaseCondition.validMoonPhases))).apply(builder, LunarPhaseCondition::new);
+        return builder.group(Codec.INT.listOf().fieldOf("is_valid_moon_phase").forGetter(lunarPhaseCondition -> new ArrayList<>(lunarPhaseCondition.validMoonPhases))).apply(builder, LunarPhaseCondition::new);
     });
 
     private final IntSet validMoonPhases = new IntArraySet();

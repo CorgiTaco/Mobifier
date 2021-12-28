@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LastInjurerHasCondition implements Condition {
     public static Codec<LastInjurerHasCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Condition.CODEC.listOf().fieldOf("conditionsRequiredToPass").forGetter(lastInjurerByTypeHasCondition -> lastInjurerByTypeHasCondition.injurerConditions)
+        return builder.group(Condition.CODEC.listOf().fieldOf("conditions_to_apply").forGetter(lastInjurerByTypeHasCondition -> lastInjurerByTypeHasCondition.injurerConditions)
         ).apply(builder, LastInjurerHasCondition::new);
     });
     private final List<Condition> injurerConditions;

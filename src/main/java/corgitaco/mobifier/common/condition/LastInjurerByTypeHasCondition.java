@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class LastInjurerByTypeHasCondition implements Condition {
     public static Codec<LastInjurerByTypeHasCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.unboundedMap(CodecUtil.ENTITY_TYPE_CODEC, Condition.CODEC.listOf()).fieldOf("conditionsRequiredToPass").forGetter(lastInjurerByTypeHasCondition -> lastInjurerByTypeHasCondition.injurerConditions)
+        return builder.group(Codec.unboundedMap(CodecUtil.ENTITY_TYPE_CODEC, Condition.CODEC.listOf()).fieldOf("conditions_to_apply").forGetter(lastInjurerByTypeHasCondition -> lastInjurerByTypeHasCondition.injurerConditions)
         ).apply(builder, LastInjurerByTypeHasCondition::new);
     });
     private final Map<EntityType<?>, List<Condition>> injurerConditions;

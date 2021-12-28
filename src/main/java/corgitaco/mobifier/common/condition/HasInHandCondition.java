@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class HasInHandCondition implements Condition {
     public static final Codec<HasInHandCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.unboundedMap(CodecUtil.HAND_CODEC, ItemStackCheck.CODEC).fieldOf("hand_check").forGetter(hasInHandCondition -> hasInHandCondition.handItemsChecksMap)).
+        return builder.group(Codec.unboundedMap(CodecUtil.HAND_CODEC, ItemStackCheck.CODEC).fieldOf("has_in_hand").forGetter(hasInHandCondition -> hasInHandCondition.handItemsChecksMap)).
                 apply(builder, HasInHandCondition::new);
     });
 

@@ -19,8 +19,8 @@ import java.util.Optional;
 public class InsideStructureCondition implements Condition {
 
     public static final Codec<InsideStructureCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(CodecUtil.STRUCTURE_CODEC.listOf().fieldOf("structures").forGetter(insideStructureCondition -> insideStructureCondition.structures),
-                Codec.BOOL.fieldOf("mustIntersectPiece").forGetter(insideStructureCondition -> insideStructureCondition.intersectsPiece)
+        return builder.group(CodecUtil.STRUCTURE_CODEC.listOf().fieldOf("structure_is").forGetter(insideStructureCondition -> insideStructureCondition.structures),
+                Codec.BOOL.fieldOf("in_piece").forGetter(insideStructureCondition -> insideStructureCondition.intersectsPiece)
         ).apply(builder, InsideStructureCondition::new);
     });
 

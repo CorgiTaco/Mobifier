@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class BiomeCondition implements Condition {
 
-    public static final Codec<BiomeCondition> CODEC = RecordCodecBuilder.create(builder -> builder.group(CodecUtil.BIOME_CODEC.listOf().fieldOf("isBiome").forGetter(biomeCondition -> new ArrayList<>(biomeCondition.biomes))).apply(builder, BiomeCondition::new));
+    public static final Codec<BiomeCondition> CODEC = RecordCodecBuilder.create(builder -> builder.group(CodecUtil.BIOME_CODEC.listOf().fieldOf("biome_is").forGetter(biomeCondition -> new ArrayList<>(biomeCondition.biomes))).apply(builder, BiomeCondition::new));
     private final Set<RegistryKey<Biome>> biomes;
 
     public BiomeCondition(Collection<RegistryKey<Biome>> biomes) {

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DifficultyCondition implements Condition {
 
-    public static final Codec<DifficultyCondition> CODEC = RecordCodecBuilder.create(builder -> builder.group(Codec.unboundedMap(CodecUtil.DIFFICULTY_CODEC, Codec.BOOL).fieldOf("isDifficulty").forGetter(difficultyCondition -> difficultyCondition.isDifficulty)).apply(builder, DifficultyCondition::new));
+    public static final Codec<DifficultyCondition> CODEC = RecordCodecBuilder.create(builder -> builder.group(Codec.unboundedMap(CodecUtil.DIFFICULTY_CODEC, Codec.BOOL).fieldOf("difficulty_is").forGetter(difficultyCondition -> difficultyCondition.isDifficulty)).apply(builder, DifficultyCondition::new));
     private final Map<Difficulty, Boolean> isDifficulty;
 
     public DifficultyCondition(Map<Difficulty, Boolean> isDifficulty) {

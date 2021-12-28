@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 public class ChanceCondition implements Condition {
 
     public static final Codec<ChanceCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.DOUBLE.fieldOf("chanceCondition").forGetter(chanceCondition -> chanceCondition.chance)
+        return builder.group(Codec.DOUBLE.fieldOf("chance").forGetter(chanceCondition -> chanceCondition.chance)
         ).apply(builder, ChanceCondition::new);
     });
 
