@@ -54,6 +54,9 @@ public class YRangeCondition implements Condition {
         public YRange(int minY, int maxY) {
             this.minY = minY;
             this.maxY = maxY;
+            if (minY > maxY) {
+                throw new IllegalArgumentException("minY cannot be greater than maxY");
+            }
         }
 
         public boolean isInBetween(int y) {
