@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.Mobifier;
@@ -12,9 +13,11 @@ import corgitaco.mobifier.common.condition.BiomeCategoryCondition;
 import corgitaco.mobifier.common.condition.InDimensionCondition;
 import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleModifier;
+import corgitaco.mobifier.common.util.MobifierUtil;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,8 +90,31 @@ public class MobifierConfig {
         return DEFAULT;
     }
 
+    public static final Codec<Map<EntityType<?>, List<MobMobifier>>> CATEGORY_OR_ENTITY_TYPE_MAP_CODEC = Codec.unboundedMap(Codec.STRING, MobMobifier.CODEC.listOf()).comapFlatMap(s -> {
+        Map<EntityType<?>, List<MobMobifier>> result = new Object2ObjectOpenHashMap<>();
+        s.forEach((key, value) -> {
+            final String filter = "category/";
+            if (key.toLowerCase().startsWith(filter)) {
+                for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
+                    if (entityType.getCategory() == MobifierUtil.tryParseMonsterCategory(key.substring(filter.length()))) {
+                        result.put(entityType, value);
+                    }
+                }
+            } else {
+                result.put(Registry.ENTITY_TYPE.get(new ResourceLocation(key)), value);
+            }
+        });
+        return DataResult.success(result);
+    }, entityTypeListMap -> {
+        Map<String, List<MobMobifier>> result = new HashMap<>();
+        entityTypeListMap.forEach((type, mobMobifiers) -> {
+            result.put(Registry.ENTITY_TYPE.getKey(type).toString(), mobMobifiers);
+        });
+        return result;
+    });
+
     public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.unboundedMap(CodecUtil.ENTITY_TYPE_CODEC, MobMobifier.CODEC.listOf()).fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
+        return builder.group(CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
         ).apply(builder, MobifierConfig::new);
     });
 

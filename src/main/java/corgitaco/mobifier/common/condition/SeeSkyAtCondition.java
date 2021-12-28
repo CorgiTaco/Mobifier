@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 public class SeeSkyAtCondition implements Condition {
 
     public static Codec<SeeSkyAtCondition> CODEC = RecordCodecBuilder.create(builder -> {
@@ -18,7 +19,7 @@ public class SeeSkyAtCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         return world.canSeeSky(entity.blockPosition().offset(this.offset));
     }
 

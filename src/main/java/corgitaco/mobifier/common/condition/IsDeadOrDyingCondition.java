@@ -3,6 +3,7 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
+
 public class IsDeadOrDyingCondition implements Condition {
     public static final IsDeadOrDyingCondition INSTANCE = new IsDeadOrDyingCondition();
     public static final Codec<IsDeadOrDyingCondition> CODEC = Codec.unit(() -> {
@@ -10,7 +11,7 @@ public class IsDeadOrDyingCondition implements Condition {
     });
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         return isDeadOrDying;
     }
 

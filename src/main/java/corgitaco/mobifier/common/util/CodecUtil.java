@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
@@ -41,6 +42,7 @@ public class CodecUtil {
     public static final Codec<Structure<?>> STRUCTURE_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.STRUCTURE_FEATURE.get(resourceLocation)), Registry.STRUCTURE_FEATURE::getKey);
     public static final Codec<Enchantment> ENCHANTMENT_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(Registry.ENCHANTMENT.get(resourceLocation)), Registry.ENCHANTMENT::getKey);
     public static final Codec<Hand> HAND_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Hand.valueOf(s.toUpperCase())), Hand::name);
+    public static final Codec<EquipmentSlotType> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(EquipmentSlotType.valueOf(s.toUpperCase())), EquipmentSlotType::name);
 
 
 }

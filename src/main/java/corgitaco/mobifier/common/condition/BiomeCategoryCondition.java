@@ -21,7 +21,7 @@ public class BiomeCategoryCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         final Biome biome = world.getBiome(entity.blockPosition());
         return biomeCategories.contains(biome.getBiomeCategory());
     }

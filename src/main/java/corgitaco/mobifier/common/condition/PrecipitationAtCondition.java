@@ -5,10 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 public class PrecipitationAtCondition implements Condition {
 
     public static Codec<PrecipitationAtCondition> CODEC = RecordCodecBuilder.create(builder -> {
-       return builder.group(BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(precipitationAtCondition -> precipitationAtCondition.offset), Codec.BOOL.optionalFieldOf("snow", false).forGetter(precipitationAtCondition -> {
+        return builder.group(BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(precipitationAtCondition -> precipitationAtCondition.offset), Codec.BOOL.optionalFieldOf("snow", false).forGetter(precipitationAtCondition -> {
             return precipitationAtCondition.snow;
         })).apply(builder, PrecipitationAtCondition::new);
     });
@@ -22,7 +23,7 @@ public class PrecipitationAtCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         BlockPos offset = entity.blockPosition().offset(this.offset);
         if (world.isRainingAt(offset)) {
             if (this.snow) {

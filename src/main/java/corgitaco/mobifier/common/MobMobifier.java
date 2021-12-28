@@ -18,11 +18,11 @@ import java.util.Map;
 public class MobMobifier {
 
     public static final Codec<MobMobifier> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(DoubleModifier.CODEC.optionalFieldOf("xpMultiplier", new DoubleModifier("+0.0")).forGetter(mobMobifier -> mobMobifier.xpMultiplier),
-                Codec.unboundedMap(CodecUtil.ATTRIBUTE_CODEC, DoubleModifier.CODEC).optionalFieldOf("attributesMultipliers", new HashMap<>()).forGetter(mobMobifier -> mobMobifier.attributesMultipliers),
-                Codec.BOOL.optionalFieldOf("dropDefaultTable", true).forGetter(mobMobifier -> mobMobifier.dropDefaultTable),
-                ResourceLocation.CODEC.listOf().optionalFieldOf("droppedTables", new ArrayList<>()).forGetter(mobMobifier -> mobMobifier.droppedTables),
-                Condition.CODEC.listOf().fieldOf("conditionsRequiredToPass").forGetter(mobMobifier -> mobMobifier.conditionsRequiredToPass)
+        return builder.group(DoubleModifier.CODEC.optionalFieldOf("xp_modifier", new DoubleModifier("+0.0")).forGetter(mobMobifier -> mobMobifier.xpMultiplier),
+                Codec.unboundedMap(CodecUtil.ATTRIBUTE_CODEC, DoubleModifier.CODEC).optionalFieldOf("attribute_modifier", new HashMap<>()).forGetter(mobMobifier -> mobMobifier.attributesMultipliers),
+                Codec.BOOL.optionalFieldOf("drop_death_table", true).forGetter(mobMobifier -> mobMobifier.dropDefaultTable),
+                ResourceLocation.CODEC.listOf().optionalFieldOf("drops_tables", new ArrayList<>()).forGetter(mobMobifier -> mobMobifier.droppedTables),
+                Condition.CODEC.listOf().fieldOf("conditions_to_apply").forGetter(mobMobifier -> mobMobifier.conditionsRequiredToPass)
         ).apply(builder, MobMobifier::new);
     });
 

@@ -24,7 +24,6 @@ public class Mobifier {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::commonSetup);
         Condition.register();
-        MobifierConfig.getConfig(true);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

@@ -19,7 +19,7 @@ public class DifficultyCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         return this.isDifficulty.getOrDefault(world.getDifficulty(), false);
     }
 

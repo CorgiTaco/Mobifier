@@ -11,8 +11,8 @@ import java.util.List;
 public class TimeOfDayCondition implements Condition {
 
     public static final Codec<TimeOfDayCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(LongPair.createLongPairCodec("minTime", "maxTime").listOf().fieldOf("times_of_day").forGetter(timeOfDayCondition -> timeOfDayCondition.timesOfDay),
-                Codec.LONG.optionalFieldOf("dayLength", 24000L).forGetter(timeOfDayCondition -> timeOfDayCondition.dayLength)
+        return builder.group(LongPair.createLongPairCodec("min_time", "max_ime").listOf().fieldOf("times_of_day").forGetter(timeOfDayCondition -> timeOfDayCondition.timesOfDay),
+                Codec.LONG.optionalFieldOf("day_length", 24000L).forGetter(timeOfDayCondition -> timeOfDayCondition.dayLength)
         ).apply(builder, TimeOfDayCondition::new);
     });
 

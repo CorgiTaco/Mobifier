@@ -21,9 +21,8 @@ public interface Condition {
         register("biome", BiomeCondition.CODEC);
         register("biome_category", BiomeCategoryCondition.CODEC);
         register("difficulty", DifficultyCondition.CODEC);
-        register("wearing", WearingCondition.CODEC);
-        register("has_in_hand", HasInHandCondition.CODEC);
-        register("attribute_comparator", AttributeCondition.CODEC);
+        register("has_equipped", HasEquippedCondition.CODEC);
+        register("attribute", AttributeCondition.CODEC);
         register("dimension", InDimensionCondition.CODEC);
         register("is_dead_or_dying", IsDeadOrDyingCondition.CODEC);
         register("last_injurer_has", LastInjurerHasCondition.CODEC);

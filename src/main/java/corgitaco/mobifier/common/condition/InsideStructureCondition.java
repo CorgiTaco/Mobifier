@@ -20,7 +20,7 @@ public class InsideStructureCondition implements Condition {
 
     public static final Codec<InsideStructureCondition> CODEC = RecordCodecBuilder.create(builder -> {
         return builder.group(CodecUtil.STRUCTURE_CODEC.listOf().fieldOf("structure_is").forGetter(insideStructureCondition -> insideStructureCondition.structures),
-                Codec.BOOL.fieldOf("in_piece").forGetter(insideStructureCondition -> insideStructureCondition.intersectsPiece)
+                Codec.BOOL.optionalFieldOf("in_piece", false).forGetter(insideStructureCondition -> insideStructureCondition.intersectsPiece)
         ).apply(builder, InsideStructureCondition::new);
     });
 

@@ -20,7 +20,7 @@ public class LastInjurerHasCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         @Nullable
         LivingEntity lastHurtByMob = entity.getLastHurtByMob();
 

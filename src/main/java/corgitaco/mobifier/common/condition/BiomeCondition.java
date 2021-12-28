@@ -24,7 +24,7 @@ public class BiomeCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world,LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
         Optional<RegistryKey<Biome>> biomeKey = world.getBiomeName(entity.blockPosition());
         return biomeKey.isPresent() && this.biomes.contains(biomeKey.get());
     }
