@@ -20,16 +20,23 @@ import java.util.Arrays;
 @SuppressWarnings("deprecation")
 public class CodecUtil {
 
-    public static final Codec<EntityType<?>> ENTITY_TYPE_CODEC = createLoggedExceptionCodec(Registry.ENTITY_TYPE);
-    public static final Codec<Attribute> ATTRIBUTE_CODEC = createLoggedExceptionCodec(Registry.ATTRIBUTE);
-    public static final Codec<Item> ITEM_CODEC = createLoggedExceptionCodec(Registry.ITEM);
-    public static final Codec<Block> BLOCK_CODEC = createLoggedExceptionCodec(Registry.BLOCK);
-    public static final Codec<Structure<?>> STRUCTURE_CODEC = createLoggedExceptionCodec(Registry.STRUCTURE_FEATURE);
-    public static final Codec<Enchantment> ENCHANTMENT_CODEC = createLoggedExceptionCodec(Registry.ENCHANTMENT);
+    public static final Codec<EntityType<?>> ENTITY_TYPE_CODEC = createLoggedExceptionRegistryCodec(Registry.ENTITY_TYPE);
+    public static final Codec<Attribute> ATTRIBUTE_CODEC = createLoggedExceptionRegistryCodec(Registry.ATTRIBUTE);
+    public static final Codec<Item> ITEM_CODEC = createLoggedExceptionRegistryCodec(Registry.ITEM);
+    public static final Codec<Block> BLOCK_CODEC = createLoggedExceptionRegistryCodec(Registry.BLOCK);
+    public static final Codec<Structure<?>> STRUCTURE_CODEC = createLoggedExceptionRegistryCodec(Registry.STRUCTURE_FEATURE);
+    public static final Codec<Enchantment> ENCHANTMENT_CODEC = createLoggedExceptionRegistryCodec(Registry.ENCHANTMENT);
 
     public static final Codec<RegistryKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(RegistryKey.create(Registry.BIOME_REGISTRY, resourceLocation)), RegistryKey::location);
 
-    public static final Codec<EquipmentSlotType> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(EquipmentSlotType.valueOf(s.toUpperCase())), EquipmentSlotType::name);
+    public static final Codec<EquipmentSlotType> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> {
+        final EquipmentSlotType equipmentSlotType = EquipmentSlotType.byName(s.toLowerCase());
+        if (equipmentSlotType == null) {
+            throw new IllegalArgumentException(String.format("\"%s\" is not a valid equipmentSlotType. Valid equipmentSlotTypes: %s", s, Arrays.toString(Arrays.stream(EquipmentSlotType.values()).map(EquipmentSlotType::getName).toArray())));
+        }
+        return DataResult.success(equipmentSlotType);
+
+    }, EquipmentSlotType::getName);
     public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> {
         final Difficulty difficulty = Difficulty.byName(s.toLowerCase());
         if (difficulty == null) {
@@ -39,7 +46,7 @@ public class CodecUtil {
 
     }, Enum::name);
 
-    public static <T> Codec<T> createLoggedExceptionCodec(Registry<T> registry) {
+    public static <T> Codec<T> createLoggedExceptionRegistryCodec(Registry<T> registry) {
         return ResourceLocation.CODEC.comapFlatMap(location -> {
             final T result = registry.get(location);
 
