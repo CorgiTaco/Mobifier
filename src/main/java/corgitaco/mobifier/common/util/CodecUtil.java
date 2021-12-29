@@ -40,11 +40,11 @@ public class CodecUtil {
     public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> {
         final Difficulty difficulty = Difficulty.byName(s.toLowerCase());
         if (difficulty == null) {
-            throw new IllegalArgumentException(String.format("\"%s\" is not a valid difficulty. Valid difficulties: %s", s, Arrays.toString(Arrays.stream(Difficulty.values()).map(Difficulty::getId).toArray())));
+            throw new IllegalArgumentException(String.format("\"%s\" is not a valid difficulty. Valid difficulties: %s", s, Arrays.toString(Arrays.stream(Difficulty.values()).map(Difficulty::getKey).toArray())));
         }
         return DataResult.success(difficulty);
 
-    }, Enum::name);
+    }, Difficulty::getKey);
 
     public static <T> Codec<T> createLoggedExceptionRegistryCodec(Registry<T> registry) {
         return ResourceLocation.CODEC.comapFlatMap(location -> {
