@@ -35,7 +35,7 @@ public class EveryAmountOfDaysCondition implements Condition {
 
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         for (int amountOfDays : this.amountOfDays) {
             long worldDay = (world.getDayTime() / dayLength) + offset;
             if (worldDay / amountOfDays == 0) {

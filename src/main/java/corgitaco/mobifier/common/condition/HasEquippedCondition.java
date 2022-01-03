@@ -29,7 +29,7 @@ public class HasEquippedCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         int hits = 0;
         for (Map.Entry<EquipmentSlotType, List<ItemStackCheck>> stackChecksEntry : this.stackChecksEntries) {
             final ItemStack slotItemStack = entity.getItemBySlot(stackChecksEntry.getKey());

@@ -24,7 +24,7 @@ public class InDimensionCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         return this.validWorlds.contains(world.dimension());
     }
 

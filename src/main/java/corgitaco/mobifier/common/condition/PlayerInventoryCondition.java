@@ -39,7 +39,7 @@ public class PlayerInventoryCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         if (entity instanceof PlayerEntity) {
             for (ItemStack item : ((PlayerEntity) entity).inventory.items) {
                 if (itemItemStackCheckMap.containsKey(item.getItem())) {

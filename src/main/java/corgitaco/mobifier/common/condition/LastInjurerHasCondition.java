@@ -20,7 +20,7 @@ public class LastInjurerHasCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         @Nullable
         LivingEntity lastHurtByMob = entity.getLastHurtByMob();
 
@@ -29,7 +29,7 @@ public class LastInjurerHasCondition implements Condition {
         }
 
         for (Condition condition : injurerConditions) {
-            if (!condition.passes(world, lastHurtByMob, isDeadOrDying)) {
+            if (!condition.passes(world, lastHurtByMob, isDeadOrDying, mobifiersPassed)) {
                 return false;
             }
         }

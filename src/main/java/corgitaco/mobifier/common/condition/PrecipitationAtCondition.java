@@ -23,7 +23,7 @@ public class PrecipitationAtCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         BlockPos offset = entity.blockPosition().offset(this.offset);
         if (world.isRainingAt(offset)) {
             if (this.snow) {

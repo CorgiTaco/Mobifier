@@ -28,7 +28,7 @@ public class AttributeCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         if (attributeComparator.isEmpty()) {
             return false;
         }

@@ -50,10 +50,12 @@ public abstract class MixinLivingEntity extends Entity {
         Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
         final EntityType<?> entityType = this.getType();
         double totalValue = xpOrbReward;
+        int mobifiersPassed = 0;
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
                     totalValue = mobMobifier.getXpMultiplier().apply(totalValue);
+                    mobifiersPassed++;
                 }
             }
         }
@@ -66,14 +68,16 @@ public abstract class MixinLivingEntity extends Entity {
         Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
+            int mobifiersPassed = 0;
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
                     if (this.getAttributes().hasAttribute(attribute)) {
                         final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
                         if (attributesMultipliers.containsKey(attribute)) {
                             cir.setReturnValue(cir.getReturnValueD() * attributesMultipliers.get(attribute).apply(cir.getReturnValue()));
                         }
                     }
+                    mobifiersPassed++;
                 }
             }
         }
@@ -89,8 +93,9 @@ public abstract class MixinLivingEntity extends Entity {
 
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
+            int mobifiersPassed = 0;
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying())) {
+                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
                     // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
                     if (mobMobifier.isDropDefaultTable()) {
                         ci.cancel();
@@ -108,6 +113,7 @@ public abstract class MixinLivingEntity extends Entity {
                     if (!unknownTables.isEmpty()) {
                         Mobifier.LOGGER.error(String.format("Found unknown loot table(s) for \"%s\": %s", Registry.ENTITY_TYPE.getKey(entityType).toString(), unknownTables));
                     }
+                    mobifiersPassed++;
                 }
             }
         }

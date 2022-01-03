@@ -13,7 +13,7 @@ import java.util.function.Function;
 public interface Condition {
     Codec<Condition> CODEC = MobifierRegistry.CONDITION.dispatchStable(Condition::codec, Function.identity());
 
-    boolean passes(World world, LivingEntity entity, boolean isDeadOrDying);
+    boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed);
 
     Codec<? extends Condition> codec();
 
@@ -38,6 +38,7 @@ public interface Condition {
         register("lunar_phase", LunarPhaseCondition.CODEC);
         register("time_of_day", TimeOfDayCondition.CODEC);
         register("every_amount_of_days", EveryAmountOfDaysCondition.CODEC);
+        register("mobifiers_passed", MobifiersPassed.CODEC);
     }
 
     static void register(String id, Codec<? extends Condition> codec) {

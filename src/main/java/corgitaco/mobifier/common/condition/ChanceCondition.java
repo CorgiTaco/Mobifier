@@ -19,7 +19,7 @@ public class ChanceCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         return isDeadOrDying && chance > world.getRandom().nextDouble();
     }
 

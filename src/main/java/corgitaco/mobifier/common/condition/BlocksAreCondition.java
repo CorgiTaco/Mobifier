@@ -27,7 +27,7 @@ public class BlocksAreCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         for (BlockIs blockIs : blockStatesAre) {
             BlockPos offsetPos = entity.blockPosition().offset(blockIs.offset);
 

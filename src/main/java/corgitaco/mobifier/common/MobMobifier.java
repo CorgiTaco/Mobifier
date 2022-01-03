@@ -60,9 +60,9 @@ public class MobMobifier {
         return conditionsRequiredToPass;
     }
 
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         for (Condition requiredToPass : this.conditionsRequiredToPass) {
-            if (!requiredToPass.passes(world, entity, isDeadOrDying)) {
+            if (!requiredToPass.passes(world, entity, isDeadOrDying, mobifiersPassed)) {
                 return false;
             }
         }

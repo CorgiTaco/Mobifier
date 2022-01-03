@@ -33,7 +33,7 @@ public class TimeOfDayCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         for (LongPair longPair : this.timesOfDay) {
             if (longPair.isInBetween(world.getDayTime() % this.dayLength)) {
                 return true;

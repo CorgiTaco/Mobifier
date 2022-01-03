@@ -36,7 +36,7 @@ public class InsideStructureCondition implements Condition {
     }
 
     @Override
-    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying) {
+    public boolean passes(World world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         if (world.isClientSide) {
             for (Structure<?> structure : structures) {
                 if (this.intersectsPiece) {
