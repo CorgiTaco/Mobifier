@@ -9,7 +9,9 @@
     "MixinLivingEntity",
     "MixinMinecraftServer",
     "MixinPlayerList",
-    "access.RegistryAccess"
+    "access.DynamicRegistriesImplAccess",
+    "access.RegistryAccess",
+    "access.RegistryKeyAccess"
   ],
   "client": [
   ],

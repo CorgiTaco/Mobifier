@@ -37,7 +37,7 @@ public class MobifierConfig {
 
     public static MobifierConfig INSTANCE = null;
 
-    public static final MobifierConfig DEFAULT = new MobifierConfig(Util.make(new Object2ObjectOpenHashMap<>(), map -> {
+    public static final MobifierConfig DEFAULT = new MobifierConfig(true, Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
             list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
                 for (Attribute attribute : Registry.ATTRIBUTE) {
@@ -113,17 +113,24 @@ public class MobifierConfig {
     });
 
     public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
+        return builder.group(Codec.BOOL.optionalFieldOf("dumpRegistries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
+                CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
         ).apply(builder, MobifierConfig::new);
     });
 
+    private final boolean dumpRegistries;
     private final Map<EntityType<?>, List<MobMobifier>> mobMobifierMap;
 
-    public MobifierConfig(Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
+    public MobifierConfig(boolean dumpRegistries, Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
+        this.dumpRegistries = dumpRegistries;
         this.mobMobifierMap = mobMobifierMap;
     }
 
     public Map<EntityType<?>, List<MobMobifier>> getMobMobifierMap() {
         return mobMobifierMap;
+    }
+
+    public boolean isDumpRegistries() {
+        return dumpRegistries;
     }
 }
