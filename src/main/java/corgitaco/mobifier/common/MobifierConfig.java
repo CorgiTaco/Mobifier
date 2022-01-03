@@ -113,7 +113,7 @@ public class MobifierConfig {
     });
 
     public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.BOOL.optionalFieldOf("dumpRegistries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
+        return builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
                 CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
         ).apply(builder, MobifierConfig::new);
     });
