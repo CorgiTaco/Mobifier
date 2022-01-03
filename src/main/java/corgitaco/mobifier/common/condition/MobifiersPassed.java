@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 public class MobifiersPassed implements Condition {
 
     public static final Codec<MobifiersPassed> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(DoubleComparator.CODEC.fieldOf("mobifiers_passed_omparator").forGetter(mobifiersPassed -> {
+        return builder.group(DoubleComparator.CODEC.fieldOf("mobifiers_passed_comparator").forGetter(mobifiersPassed -> {
                     return mobifiersPassed.doubleComparator;
                 })
         ).apply(builder, MobifiersPassed::new);
