@@ -44,11 +44,23 @@ public class MobifierConfig {
                     map1.put(attribute, new DoubleModifier("*2"));
                 }
 
-            }), false, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
+            }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
                 list1.add(new BiomeCategoryCondition(ImmutableList.of(Biome.Category.DESERT)));
                 list1.add(new InDimensionCondition(ImmutableList.of(World.OVERWORLD)));
             })));
         }));
+        Registry.ENTITY_TYPE.forEach(entityType -> {
+            if (entityType != EntityType.HUSK) {
+                map.put(entityType, Util.make(new ArrayList<>(), list -> {
+                    list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+                        for (Attribute attribute : Registry.ATTRIBUTE) {
+                            map1.put(attribute, new DoubleModifier("*1"));
+                        }
+
+                    }), true, new ArrayList<>(), new ArrayList<>()));
+                }));
+            }
+        });
     }));
 
     public static MobifierConfig getConfig() {
@@ -80,6 +92,7 @@ public class MobifierConfig {
                 Mobifier.LOGGER.error(e.toString());
             }
         }
+        Mobifier.LOGGER.info(String.format("\"%s\" was read.", path.toString()));
 
         try {
             return CODEC.decode(JsonOps.INSTANCE, new JsonParser().parse(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
@@ -114,7 +127,7 @@ public class MobifierConfig {
 
     public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
         return builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
-                CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
+            CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
         ).apply(builder, MobifierConfig::new);
     });
 

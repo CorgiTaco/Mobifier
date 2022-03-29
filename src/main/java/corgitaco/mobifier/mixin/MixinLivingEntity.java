@@ -74,7 +74,7 @@ public abstract class MixinLivingEntity extends Entity {
                     if (this.getAttributes().hasAttribute(attribute)) {
                         final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
                         if (attributesMultipliers.containsKey(attribute)) {
-                            cir.setReturnValue(cir.getReturnValueD() * attributesMultipliers.get(attribute).apply(cir.getReturnValue()));
+                            cir.setReturnValue(attributesMultipliers.get(attribute).apply(cir.getReturnValueD()));
                         }
                     }
                     mobifiersPassed++;
