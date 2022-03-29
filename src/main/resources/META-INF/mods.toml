@@ -4,7 +4,7 @@ license = "LGPLv3"
 issueTrackerURL = "https://github.com/CorgiTaco/Mobifier/issues"
 [[mods]]
 modId = "mobifier"
-version = "1.1.1"
+version = "1.1.2"
 displayName = "Mobifier"
 displayURL = ""
 logoFile = "icon.png"
