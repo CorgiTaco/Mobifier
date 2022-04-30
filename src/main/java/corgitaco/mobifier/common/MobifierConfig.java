@@ -80,7 +80,7 @@ public class MobifierConfig {
     }
 
     private static MobifierConfig readConfig() {
-        final Path path = FMLPaths.CONFIGDIR.get().resolve(Mobifier.MOD_ID + ".json");
+        final Path path = Mobifier.CONFIG_PATH.resolve(Mobifier.MOD_ID + ".json");
 
         if (!path.toFile().exists()) {
             JsonElement jsonElement = CODEC.encodeStart(JsonOps.INSTANCE, DEFAULT).result().get();

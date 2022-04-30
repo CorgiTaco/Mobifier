@@ -1,6 +1,5 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.common.MobifierConfig;
 import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.mobifier.common.network.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +17,7 @@ import java.nio.file.Path;
 public class Mobifier {
     public static final String MOD_ID = "mobifier";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static final Path CONFIG_PATH = new File(String.valueOf(FMLPaths.CONFIGDIR.get().resolve(MOD_ID))).toPath();
+    public static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get();
 
     public Mobifier() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
