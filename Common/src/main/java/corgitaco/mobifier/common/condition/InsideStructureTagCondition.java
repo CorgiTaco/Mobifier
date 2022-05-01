@@ -41,11 +41,9 @@ public class InsideStructureTagCondition implements Condition {
             return clientPasses((IsInsideStructureTracker.Access) entity, configuredStructureFeatures);
         } else {
             for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : structureTags) {
-                Optional<HolderSet.Named<ConfiguredStructureFeature<?, ?>>> tag = configuredStructureFeatures.getTag(structureTag);
-                if (tag.isEmpty()) {
-                    continue;
-                }
-                List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.get().stream().toList();
+                HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
+
+                List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.stream().toList();
 
                 for (Holder<ConfiguredStructureFeature<?, ?>> structure : structures) {
                     BlockPos entityPosition = entity.blockPosition();
@@ -82,11 +80,9 @@ public class InsideStructureTagCondition implements Condition {
 
     private boolean clientPasses(IsInsideStructureTracker.Access entity, Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures) {
         for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : this.structureTags) {
-            Optional<HolderSet.Named<ConfiguredStructureFeature<?, ?>>> tag = configuredStructureFeatures.getTag(structureTag);
-            if (tag.isEmpty()) {
-                continue;
-            }
-            List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.get().stream().toList();
+            HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
+
+            List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.stream().toList();
 
             for (Holder<ConfiguredStructureFeature<?, ?>> structure : structures) {
                 if (this.intersectsPiece) {
