@@ -1,1 +1,1 @@
-
+# For documentation see the [Wiki](https://github.com/CorgiTaco/Mobifier/wiki)
