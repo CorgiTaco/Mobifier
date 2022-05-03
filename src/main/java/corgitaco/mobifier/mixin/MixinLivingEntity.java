@@ -97,7 +97,7 @@ public abstract class MixinLivingEntity extends Entity {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
                     // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
-                    if (mobMobifier.isDropDefaultTable()) {
+                    if (!mobMobifier.isDropDefaultTable()) {
                         ci.cancel();
                     }
 
