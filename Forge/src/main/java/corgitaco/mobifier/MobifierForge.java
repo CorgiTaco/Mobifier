@@ -21,7 +21,6 @@ public class MobifierForge {
     public MobifierForge() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::commonSetup);
-        Condition.register();
         ModLoaderContext.setInstance(getModLoaderData());
     }
 
