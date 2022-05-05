@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -26,6 +27,7 @@ public class CodecUtil {
     public static final Codec<Block> BLOCK_CODEC = createLoggedExceptionRegistryCodec(Registry.BLOCK);
     public static final Codec<StructureFeature<?>> STRUCTURE_CODEC = createLoggedExceptionRegistryCodec(Registry.STRUCTURE_FEATURE);
     public static final Codec<Enchantment> ENCHANTMENT_CODEC = createLoggedExceptionRegistryCodec(Registry.ENCHANTMENT);
+    public static final Codec<MobEffect> EFFECT_CODEC = createLoggedExceptionRegistryCodec(Registry.MOB_EFFECT);
 
     public static final Codec<ResourceKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(ResourceKey.create(Registry.BIOME_REGISTRY, resourceLocation)), ResourceKey::location);
 

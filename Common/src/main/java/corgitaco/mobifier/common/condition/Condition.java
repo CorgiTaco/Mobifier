@@ -40,6 +40,9 @@ public interface Condition {
         register("every_amount_of_days", EveryAmountOfDaysCondition.CODEC);
         register("mobifiers_passed", MobifiersPassed.CODEC);
         register("is_baby", IsBabyCondition.CODEC);
+        register("is_swimming", IsSwimmingCondition.CODEC);
+        register("flipped", FlipCondition.CODEC);
+        register("has_effect", HasEffectCondition.CODEC);
     }
 
     static void register(String id, Codec<? extends Condition> codec) {
