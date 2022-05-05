@@ -8,6 +8,7 @@
     "MixinLivingEntity",
     "MixinMinecraftServer",
     "MixinPlayerList",
+    "access.AttributeSupplierAccess",
     "access.RegistryAccess",
     "access.RegistryKeyAccess"
   ],
