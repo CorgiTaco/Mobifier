@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -26,6 +27,7 @@ public class CodecUtil {
     public static final Codec<Block> BLOCK_CODEC = createLoggedExceptionRegistryCodec(Registry.BLOCK);
     public static final Codec<Structure<?>> STRUCTURE_CODEC = createLoggedExceptionRegistryCodec(Registry.STRUCTURE_FEATURE);
     public static final Codec<Enchantment> ENCHANTMENT_CODEC = createLoggedExceptionRegistryCodec(Registry.ENCHANTMENT);
+    public static final Codec<Effect> EFFECT_CODEC = createLoggedExceptionRegistryCodec(Registry.MOB_EFFECT);
 
     public static final Codec<RegistryKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(RegistryKey.create(Registry.BIOME_REGISTRY, resourceLocation)), RegistryKey::location);
 
