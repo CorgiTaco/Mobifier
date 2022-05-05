@@ -32,12 +32,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class MobifierConfig {
 
     public static MobifierConfig INSTANCE = null;
 
-    public static final MobifierConfig DEFAULT = new MobifierConfig(true, Util.make(new Object2ObjectOpenHashMap<>(), map -> {
+    public static final Supplier<MobifierConfig> DEFAULT = () -> new MobifierConfig(true,Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
             list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
                 for (Attribute attribute : Registry.ATTRIBUTE) {
@@ -91,8 +92,9 @@ public class MobifierConfig {
     private static MobifierConfig readConfig() {
         final Path path = ModLoaderContext.getInstance().configPath().resolve(Mobifier.MOD_ID + ".json");
 
+        MobifierConfig defaultConfig = DEFAULT.get();
         if (!path.toFile().exists()) {
-            JsonElement jsonElement = CODEC.encodeStart(JsonOps.INSTANCE, DEFAULT).result().get();
+            JsonElement jsonElement = CODEC.encodeStart(JsonOps.INSTANCE, defaultConfig).result().get();
 
             try {
                 Files.createDirectories(path.getParent());
@@ -108,7 +110,7 @@ public class MobifierConfig {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return DEFAULT;
+        return defaultConfig;
     }
 
     public static final Codec<Map<EntityType<?>, List<MobMobifier>>> CATEGORY_OR_ENTITY_TYPE_MAP_CODEC = Codec.unboundedMap(Codec.STRING, MobMobifier.CODEC.listOf()).comapFlatMap(s -> {
