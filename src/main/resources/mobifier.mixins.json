@@ -9,6 +9,7 @@
     "MixinLivingEntity",
     "MixinMinecraftServer",
     "MixinPlayerList",
+    "access.AttributeModifierMapAccess",
     "access.DynamicRegistriesImplAccess",
     "access.RegistryAccess",
     "access.RegistryKeyAccess"

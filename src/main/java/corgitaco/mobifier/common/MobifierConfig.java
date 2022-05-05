@@ -13,25 +13,24 @@ import corgitaco.mobifier.common.condition.BiomeCategoryCondition;
 import corgitaco.mobifier.common.condition.InDimensionCondition;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.MobifierUtil;
+import corgitaco.mobifier.mixin.access.AttributeModifierMapAccess;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MobifierConfig {
 
@@ -53,15 +52,23 @@ public class MobifierConfig {
             if (entityType != EntityType.HUSK) {
                 map.put(entityType, Util.make(new ArrayList<>(), list -> {
                     list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
-                        for (Attribute attribute : Registry.ATTRIBUTE) {
+                        for (Attribute attribute : getAttributesForEntity(entityType)) {
                             map1.put(attribute, new DoubleModifier("*1"));
                         }
-
                     }), true, new ArrayList<>(), new ArrayList<>()));
                 }));
             }
         });
     }));
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static Collection<Attribute> getAttributesForEntity(EntityType entityType) {
+        if (GlobalEntityTypeAttributes.hasSupplier(entityType)) {
+            AttributeModifierMap supplier = GlobalEntityTypeAttributes.getSupplier(entityType);
+            return ((AttributeModifierMapAccess) supplier).mobifier_getInstances().keySet();
+        }
+        return new ArrayList<>();
+    }
 
     public static MobifierConfig getConfig() {
         return getConfig(false);
