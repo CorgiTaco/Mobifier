@@ -39,6 +39,7 @@ public interface Condition {
         register("time_of_day", TimeOfDayCondition.CODEC);
         register("every_amount_of_days", EveryAmountOfDaysCondition.CODEC);
         register("mobifiers_passed", MobifiersPassed.CODEC);
+        register("is_baby", IsBabyCondition.CODEC);
     }
 
     static void register(String id, Codec<? extends Condition> codec) {
