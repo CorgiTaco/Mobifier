@@ -37,10 +37,10 @@ public class InsideStructureTagCondition implements Condition {
 
     @Override
     public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
         if (world.isClientSide) {
             return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
+            Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
             for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : structureTags) {
                 HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
 
