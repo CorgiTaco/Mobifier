@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.player.IsInsideStructureTracker;
 import net.minecraft.core.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +39,7 @@ public class InsideStructureTagCondition implements Condition {
     public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
         Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
         if (world.isClientSide) {
-            return clientPasses((IsInsideStructureTracker.Access) entity, configuredStructureFeatures);
+            return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
             for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : structureTags) {
                 HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
@@ -48,6 +49,7 @@ public class InsideStructureTagCondition implements Condition {
                 for (Holder<ConfiguredStructureFeature<?, ?>> structure : structures) {
                     BlockPos entityPosition = entity.blockPosition();
                     Optional<? extends StructureStart> possibleStructureStart = ((ServerLevel) world).structureFeatureManager().startsForFeature(SectionPos.of(entityPosition), structure.value()).stream().findFirst();
+                    ResourceKey<ConfiguredStructureFeature<?, ?>> key = structure.unwrapKey().orElseThrow();
 
                     if (possibleStructureStart.isEmpty()) {
                         return false;
@@ -58,18 +60,18 @@ public class InsideStructureTagCondition implements Condition {
                     if (this.intersectsPiece) {
                         for (StructurePiece piece : structureStart.getPieces()) {
                             if (piece.getBoundingBox().isInside(entityPosition)) {
-                                ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(true, true));
+                                ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, new IsInsideStructureTracker.IsInside(true, true));
                                 return true;
                             } else {
-                                ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(structureStart.getBoundingBox().isInside(entityPosition), false));
+                                ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, new IsInsideStructureTracker.IsInside(structureStart.getBoundingBox().isInside(entityPosition), false));
                             }
                         }
                     } else {
                         if (structureStart.getBoundingBox().isInside(entityPosition)) {
-                            ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(true, false));
+                            ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, new IsInsideStructureTracker.IsInside(true, false));
                             return true;
                         } else {
-                            ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, structure, new IsInsideStructureTracker.IsInside(false, true));
+                            ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().setInside(world, entity, new IsInsideStructureTracker.IsInside(false, true));
                         }
                     }
                 }
@@ -78,25 +80,9 @@ public class InsideStructureTagCondition implements Condition {
         return false;
     }
 
-    private boolean clientPasses(IsInsideStructureTracker.Access entity, Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures) {
-        for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : this.structureTags) {
-            HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
-
-            List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.stream().toList();
-
-            for (Holder<ConfiguredStructureFeature<?, ?>> structure : structures) {
-                if (this.intersectsPiece) {
-                    if (entity.getIsInsideStructureTracker().isInside(structure).isInsideStructurePiece()) {
-                        return true;
-                    }
-                } else {
-                    if (entity.getIsInsideStructureTracker().isInside(structure).isInsideStructure()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+    private boolean clientPasses(IsInsideStructureTracker.Access entity) {
+        IsInsideStructureTracker.IsInside tracker = entity.getIsInsideStructureTracker().getTracker();
+        return (tracker.isInsideStructurePiece() && this.intersectsPiece) || tracker.isInsideStructure();
     }
 
     @Override
