@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 
@@ -19,15 +19,15 @@ import java.util.Optional;
 public class InsideStructureTagCondition implements Condition {
 
     public static final Codec<InsideStructureTagCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(TagKey.codec(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).listOf().fieldOf("structure_tag_is").forGetter(insideStructureTagCondition -> insideStructureTagCondition.structureTags),
-            Codec.BOOL.optionalFieldOf("in_piece", false).forGetter(insideStructureTagCondition -> insideStructureTagCondition.intersectsPiece)
+        return builder.group(TagKey.codec(Registry.STRUCTURE_REGISTRY).listOf().fieldOf("structure_tag_is").forGetter(insideStructureTagCondition -> insideStructureTagCondition.structureTags),
+                Codec.BOOL.optionalFieldOf("in_piece", false).forGetter(insideStructureTagCondition -> insideStructureTagCondition.intersectsPiece)
         ).apply(builder, InsideStructureTagCondition::new);
     });
 
-    private final List<TagKey<ConfiguredStructureFeature<?, ?>>> structureTags;
+    private final List<TagKey<Structure>> structureTags;
     private final boolean intersectsPiece;
 
-    public InsideStructureTagCondition(List<TagKey<ConfiguredStructureFeature<?, ?>>> structureTags, boolean mustIntersectPiece) {
+    public InsideStructureTagCondition(List<TagKey<Structure>> structureTags, boolean mustIntersectPiece) {
         if (structureTags.isEmpty()) {
             throw new IllegalArgumentException("No structures were specified.");
         }
@@ -40,16 +40,16 @@ public class InsideStructureTagCondition implements Condition {
         if (world.isClientSide) {
             return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
-            Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
-            for (TagKey<ConfiguredStructureFeature<?, ?>> structureTag : structureTags) {
-                HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
+            Registry<Structure> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY);
+            for (TagKey<Structure> structureTag : structureTags) {
+                HolderSet.Named<Structure> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
 
-                List<Holder<ConfiguredStructureFeature<?, ?>>> structures = tag.stream().toList();
+                List<Holder<Structure>> structures = tag.stream().toList();
 
-                for (Holder<ConfiguredStructureFeature<?, ?>> structure : structures) {
+                for (Holder<Structure> structure : structures) {
                     BlockPos entityPosition = entity.blockPosition();
-                    Optional<? extends StructureStart> possibleStructureStart = ((ServerLevel) world).structureFeatureManager().startsForFeature(SectionPos.of(entityPosition), structure.value()).stream().findFirst();
-                    ResourceKey<ConfiguredStructureFeature<?, ?>> key = structure.unwrapKey().orElseThrow();
+                    Optional<? extends StructureStart> possibleStructureStart = ((ServerLevel) world).structureManager().startsForStructure(SectionPos.of(entityPosition), structure.value()).stream().findFirst();
+                    ResourceKey<Structure> key = structure.unwrapKey().orElseThrow();
 
                     if (possibleStructureStart.isEmpty()) {
                         return false;

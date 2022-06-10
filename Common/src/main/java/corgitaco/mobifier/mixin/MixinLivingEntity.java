@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -47,16 +46,14 @@ public abstract class MixinLivingEntity extends Entity {
     public abstract boolean isDeadOrDying();
 
     @Shadow
-    protected abstract int getExperienceReward(Player pPlayer);
+    public abstract int getExperienceReward();
 
-    @Shadow
-    protected Player lastHurtByPlayer;
 
     @Inject(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
     private void multiplyXPDrop(CallbackInfo ci) {
         Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
         final EntityType<?> entityType = this.getType();
-        int xpOrbReward = this.getExperienceReward(this.lastHurtByPlayer);
+        int xpOrbReward = this.getExperienceReward();
         double totalValue = xpOrbReward;
         int mobifiersPassed = 0;
         if (mobifierForType.containsKey(entityType)) {

@@ -1,6 +1,5 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.mobifier.network.ForgeNetworkHandler;
 import corgitaco.mobifier.util.ModLoaderContext;
 import corgitaco.mobifier.util.S2CPacket;
