@@ -4,10 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.comparator.DoubleComparator;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.level.Level;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,12 +25,12 @@ public class AttributeCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         if (attributeComparator.isEmpty()) {
             return false;
         }
         for (Map.Entry<Attribute, DoubleComparator> entry : entries) {
-            AttributeInstance attribute = entity.getAttribute(entry.getKey());
+            AttributeInstance attribute = conditionContext.entity().getAttribute(entry.getKey());
             if (attribute == null) {
                 return false;
             }

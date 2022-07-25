@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.player.IsInsideStructureTracker;
 import net.minecraft.core.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +35,9 @@ public class InsideStructureTagCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
+        Level world = conditionContext.world();
+        LivingEntity entity = conditionContext.entity();
         if (world.isClientSide) {
             return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
@@ -49,7 +50,6 @@ public class InsideStructureTagCondition implements Condition {
                 for (Holder<Structure> structure : structures) {
                     BlockPos entityPosition = entity.blockPosition();
                     Optional<? extends StructureStart> possibleStructureStart = ((ServerLevel) world).structureManager().startsForStructure(SectionPos.of(entityPosition), structure.value()).stream().findFirst();
-                    ResourceKey<Structure> key = structure.unwrapKey().orElseThrow();
 
                     if (possibleStructureStart.isEmpty()) {
                         return false;

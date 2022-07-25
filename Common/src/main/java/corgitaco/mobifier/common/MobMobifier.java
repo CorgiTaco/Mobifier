@@ -3,12 +3,11 @@ package corgitaco.mobifier.common;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.condition.Condition;
+import corgitaco.mobifier.common.condition.ConditionContext;
 import corgitaco.mobifier.common.util.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,9 +59,9 @@ public class MobMobifier {
         return conditionsRequiredToPass;
     }
 
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (Condition requiredToPass : this.conditionsRequiredToPass) {
-            if (!requiredToPass.passes(world, entity, isDeadOrDying, mobifiersPassed)) {
+            if (!requiredToPass.passes(conditionContext)) {
                 return false;
             }
         }

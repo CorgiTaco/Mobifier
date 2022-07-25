@@ -3,6 +3,7 @@ package corgitaco.mobifier.mixin;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobMobifier;
 import corgitaco.mobifier.common.MobifierConfig;
+import corgitaco.mobifier.common.condition.ConditionContext;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -58,7 +59,7 @@ public abstract class MixinLivingEntity extends Entity {
         int mobifiersPassed = 0;
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
+                if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
                     totalValue = mobMobifier.getXpMultiplier().apply(totalValue);
                     mobifiersPassed++;
                 }
@@ -75,7 +76,7 @@ public abstract class MixinLivingEntity extends Entity {
         if (mobifierForType.containsKey(entityType)) {
             int mobifiersPassed = 0;
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
+                if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
                     if (this.getAttributes().hasAttribute(attribute)) {
                         final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
                         if (attributesMultipliers.containsKey(attribute)) {
@@ -100,7 +101,7 @@ public abstract class MixinLivingEntity extends Entity {
         if (mobifierForType.containsKey(entityType)) {
             int mobifiersPassed = 0;
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
-                if (mobMobifier.passes(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed)) {
+                if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
                     // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
                     if (!mobMobifier.isDropDefaultTable()) {
                         ci.cancel();

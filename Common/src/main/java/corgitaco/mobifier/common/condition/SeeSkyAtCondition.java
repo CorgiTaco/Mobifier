@@ -3,8 +3,6 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 public class SeeSkyAtCondition implements Condition {
 
@@ -19,8 +17,8 @@ public class SeeSkyAtCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return world.canSeeSky(entity.blockPosition().offset(this.offset));
+    public boolean passes(ConditionContext conditionContext) {
+        return conditionContext.world().canSeeSky(conditionContext.entity().blockPosition().offset(this.offset));
     }
 
     @Override

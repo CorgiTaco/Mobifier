@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,8 @@ public class LastInjurerByTypeHasCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        LivingEntity lastHurtByMob = entity.getLastHurtByMob();
+    public boolean passes(ConditionContext conditionContext) {
+        LivingEntity lastHurtByMob = conditionContext.entity().getLastHurtByMob();
 
         if (lastHurtByMob == null) {
             return false;
@@ -33,7 +32,7 @@ public class LastInjurerByTypeHasCondition implements Condition {
             List<Condition> conditions = injurerConditions.get(lastHurtByMobType);
 
             for (Condition condition : conditions) {
-                if (!condition.passes(world, lastHurtByMob, isDeadOrDying, mobifiersPassed)) {
+                if (!condition.passes(new ConditionContext(conditionContext, lastHurtByMob))) {
                     return false;
                 }
             }

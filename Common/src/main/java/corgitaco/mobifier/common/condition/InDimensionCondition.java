@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -24,8 +23,8 @@ public class InDimensionCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return this.validWorlds.contains(world.dimension());
+    public boolean passes(ConditionContext conditionContext) {
+        return this.validWorlds.contains(conditionContext.world().dimension());
     }
 
     @Override

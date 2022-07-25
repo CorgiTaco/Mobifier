@@ -3,7 +3,6 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 public class PrecipitationAtCondition implements Condition {
@@ -23,8 +22,9 @@ public class PrecipitationAtCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        BlockPos offset = entity.blockPosition().offset(this.offset);
+    public boolean passes(ConditionContext conditionContext) {
+        BlockPos offset = conditionContext.entity().blockPosition().offset(this.offset);
+        Level world = conditionContext.world();
         if (world.isRainingAt(offset)) {
             if (this.snow) {
                 return world.getBiome(offset).value().shouldSnow(world, offset);

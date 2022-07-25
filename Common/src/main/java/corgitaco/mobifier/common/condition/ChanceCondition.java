@@ -2,8 +2,6 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 public class ChanceCondition implements Condition {
 
@@ -19,8 +17,8 @@ public class ChanceCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return isDeadOrDying && chance > world.getRandom().nextDouble();
+    public boolean passes(ConditionContext conditionContext) {
+        return conditionContext.isDeadOrDying() && chance > conditionContext.world().getRandom().nextDouble();
     }
 
     @Override

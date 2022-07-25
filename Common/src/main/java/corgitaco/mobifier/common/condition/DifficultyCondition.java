@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.Map;
 
@@ -19,8 +17,8 @@ public class DifficultyCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return this.isDifficulty.getOrDefault(world.getDifficulty(), false);
+    public boolean passes(ConditionContext conditionContext) {
+        return this.isDifficulty.getOrDefault(conditionContext.world().getDifficulty(), false);
     }
 
     @Override

@@ -4,11 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.ItemStackCheck;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -39,9 +37,9 @@ public class PlayerInventoryCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        if (entity instanceof Player) {
-            for (ItemStack item : ((Player) entity).getInventory().items) {
+    public boolean passes(ConditionContext conditionContext) {
+        if (conditionContext.entity() instanceof Player) {
+            for (ItemStack item : ((Player) conditionContext.entity()).getInventory().items) {
                 if (itemItemStackCheckMap.containsKey(item.getItem())) {
                     ItemStackCheck itemStackCheck = itemItemStackCheckMap.get(item.getItem());
                     if (!itemStackCheck.test(item)) {

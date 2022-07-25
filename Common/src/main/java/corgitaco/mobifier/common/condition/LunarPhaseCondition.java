@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +21,8 @@ public class LunarPhaseCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return this.validMoonPhases.contains(world.getMoonPhase());
+    public boolean passes(ConditionContext conditionContext) {
+        return this.validMoonPhases.contains(conditionContext.world().getMoonPhase());
     }
 
     @Override

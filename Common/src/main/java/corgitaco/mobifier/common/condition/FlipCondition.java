@@ -2,8 +2,6 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 public class FlipCondition implements Condition {
 
@@ -16,8 +14,8 @@ public class FlipCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return !this.condition.passes(world, entity, isDeadOrDying, mobifiersPassed);
+    public boolean passes(ConditionContext conditionContext) {
+        return !this.condition.passes(conditionContext);
     }
 
     @Override

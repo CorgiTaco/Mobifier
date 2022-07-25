@@ -1,16 +1,14 @@
 package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 public class IsSwimmingCondition implements Condition {
 
     public static final Codec<IsSwimmingCondition> CODEC = Codec.unit(IsSwimmingCondition::new);
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        return entity.isSwimming();
+    public boolean passes(ConditionContext conditionContext) {
+        return conditionContext.entity().isSwimming();
     }
 
     @Override

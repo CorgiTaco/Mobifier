@@ -5,8 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
@@ -27,11 +25,11 @@ public class BlocksAreCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (BlockIs blockIs : blockStatesAre) {
-            BlockPos offsetPos = entity.blockPosition().offset(blockIs.offset);
+            BlockPos offsetPos = conditionContext.entity().blockPosition().offset(blockIs.offset);
 
-            if (!blockIs.is.contains(world.getBlockState(offsetPos).getBlock())) {
+            if (!blockIs.is.contains(conditionContext.world().getBlockState(offsetPos).getBlock())) {
                 return false;
             }
         }

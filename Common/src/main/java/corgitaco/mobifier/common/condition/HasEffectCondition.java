@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.CodecUtil;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -30,12 +28,12 @@ public class HasEffectCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (MobEffect effect : this.effects) {
             if (hasAny) {
-                return entity.hasEffect(effect);
+                return conditionContext.entity().hasEffect(effect);
             } else {
-                if (!entity.hasEffect(effect)) {
+                if (!conditionContext.entity().hasEffect(effect)) {
                     return false;
                 }
             }

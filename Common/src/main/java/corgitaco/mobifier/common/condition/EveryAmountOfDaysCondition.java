@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,9 +33,9 @@ public class EveryAmountOfDaysCondition implements Condition {
 
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (int amountOfDays : this.amountOfDays) {
-            long worldDay = (world.getDayTime() / dayLength) + offset;
+            long worldDay = (conditionContext.world().getDayTime() / dayLength) + offset;
             if (worldDay / amountOfDays == 0) {
                 return true;
             }

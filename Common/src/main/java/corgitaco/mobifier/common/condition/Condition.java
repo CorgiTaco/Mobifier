@@ -5,15 +5,13 @@ import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobifierRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.function.Function;
 
 public interface Condition {
     Codec<Condition> CODEC = MobifierRegistry.CONDITION.byNameCodec().dispatchStable(Condition::codec, Function.identity());
 
-    boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed);
+    boolean passes(ConditionContext conditionContext);
 
     Codec<? extends Condition> codec();
 

@@ -6,8 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.ArrayList;
@@ -24,8 +22,8 @@ public class BiomeTagCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
-        Holder<Biome> biome = world.getBiome(entity.blockPosition());
+    public boolean passes(ConditionContext conditionContext) {
+        Holder<Biome> biome = conditionContext.world().getBiome(conditionContext.entity().blockPosition());
         for (TagKey<Biome> biomeTag : this.biomeTags) {
             if(biome.is(biomeTag)) {
                 return true;

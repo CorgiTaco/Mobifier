@@ -3,8 +3,6 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -27,9 +25,9 @@ public class YRangeCondition implements Condition {
 
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (YRange yRange : yRanges) {
-            if (!yRange.isInBetween(entity.blockPosition().offset(this.offset).getY())) {
+            if (!yRange.isInBetween(conditionContext.entity().blockPosition().offset(this.offset).getY())) {
                 return false;
             }
         }
@@ -42,11 +40,10 @@ public class YRangeCondition implements Condition {
     }
 
     public static class YRange {
-        public static Codec<YRange> CODEC = RecordCodecBuilder.create(builder -> {
-            return builder.group(Codec.INT.fieldOf("minY").forGetter(yRange -> yRange.minY),
-                    Codec.INT.fieldOf("maxY").forGetter(yRange -> yRange.maxY)
-            ).apply(builder, YRange::new);
-        });
+        public static Codec<YRange> CODEC = RecordCodecBuilder.create(builder ->
+                builder.group(Codec.INT.fieldOf("minY").forGetter(yRange -> yRange.minY),
+                Codec.INT.fieldOf("maxY").forGetter(yRange -> yRange.maxY)
+        ).apply(builder, YRange::new));
 
         private final int minY;
         private final int maxY;

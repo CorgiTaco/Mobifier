@@ -3,8 +3,6 @@ package corgitaco.mobifier.common.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.util.pair.LongPair;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -33,9 +31,9 @@ public class TimeOfDayCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (LongPair longPair : this.timesOfDay) {
-            if (longPair.isInBetween(world.getDayTime() % this.dayLength)) {
+            if (longPair.isInBetween(conditionContext.world().getDayTime() % this.dayLength)) {
                 return true;
             }
         }

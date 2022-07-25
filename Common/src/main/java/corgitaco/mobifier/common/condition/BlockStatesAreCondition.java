@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -15,9 +13,11 @@ import java.util.Set;
 
 public class BlockStatesAreCondition implements Condition {
 
-    public static final Codec<BlockStatesAreCondition> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(BlockStateIs.CODEC.listOf().fieldOf("has").forGetter(blockStatesAreCondition -> new ArrayList<>(blockStatesAreCondition.blockStatesAre))).apply(builder, BlockStatesAreCondition::new);
-    });
+    public static final Codec<BlockStatesAreCondition> CODEC = RecordCodecBuilder.create(builder ->
+            builder.group(
+                    BlockStateIs.CODEC.listOf().fieldOf("has").forGetter(blockStatesAreCondition -> new ArrayList<>(blockStatesAreCondition.blockStatesAre))
+            ).apply(builder, BlockStatesAreCondition::new)
+    );
 
     private final Set<BlockStateIs> blockStatesAre;
 
@@ -26,11 +26,11 @@ public class BlockStatesAreCondition implements Condition {
     }
 
     @Override
-    public boolean passes(Level world, LivingEntity entity, boolean isDeadOrDying, int mobifiersPassed) {
+    public boolean passes(ConditionContext conditionContext) {
         for (BlockStateIs blockStateIs : blockStatesAre) {
-            BlockPos offsetPos = entity.blockPosition().offset(blockStateIs.offset);
+            BlockPos offsetPos = conditionContext.entity().blockPosition().offset(blockStateIs.offset);
 
-            if (!blockStateIs.is.contains(world.getBlockState(offsetPos))) {
+            if (!blockStateIs.is.contains(conditionContext.world().getBlockState(offsetPos))) {
                 return false;
             }
         }
