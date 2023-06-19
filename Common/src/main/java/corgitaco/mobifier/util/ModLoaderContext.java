@@ -34,7 +34,7 @@ public interface ModLoaderContext {
             sendToClient(player, packet);
         }
     }
-    static class ContextStorage {
+    class ContextStorage {
        private static ModLoaderContext CONTEXT = null;
 
     }

@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
 
-@SuppressWarnings("deprecation")
 public class CodecUtil {
 
     public static final Codec<EntityType<?>> ENTITY_TYPE_CODEC = createLoggedExceptionRegistryCodec(Registry.ENTITY_TYPE);
@@ -57,7 +56,7 @@ public class CodecUtil {
                     registryElements.append(i).append(". \"").append(registry.getKey(object).toString()).append("\"\n");
                 }
 
-                throw new IllegalArgumentException(String.format("\"%s\" is not a valid id in registry: %s.\n Current Registry Values:\n%s", location.toString(), registry.toString(), registryElements.toString()));
+                throw new IllegalArgumentException(String.format("\"%s\" is not a valid id in registry: %s.\n Current Registry Values:\n%s", location.toString(), registry, registryElements));
             }
             return DataResult.success(result);
         }, registry::getKey);

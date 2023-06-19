@@ -27,7 +27,7 @@ public class ItemStackCheck {
 
     public ItemStackCheck(Item item, Optional<DoubleComparator> durabilityComparator, Optional<DoubleComparator> stackSizeComparator, Optional<Map<Enchantment, DoubleComparator>> enchantmentLevelComparator) {
         this.item = item;
-        if (!durabilityComparator.isPresent() && !stackSizeComparator.isPresent() && !enchantmentLevelComparator.isPresent()) {
+        if (durabilityComparator.isEmpty() && stackSizeComparator.isEmpty() && enchantmentLevelComparator.isEmpty()) {
             throw new IllegalArgumentException("We need at least one check in an Item Stack Check!");
         }
         this.durabilityComparator = durabilityComparator;

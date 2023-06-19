@@ -68,7 +68,6 @@ public abstract class MixinLivingEntity extends Entity {
         ExperienceOrb.award((ServerLevel) this.level, this.position(), (int) (totalValue - xpOrbReward));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Inject(method = "getAttributeValue", at = @At("RETURN"), cancellable = true)
     private void getValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
         Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
@@ -117,7 +116,7 @@ public abstract class MixinLivingEntity extends Entity {
                     }
                     final String unknownTables = unknownTablesBuilder.toString();
                     if (!unknownTables.isEmpty()) {
-                        Mobifier.LOGGER.error(String.format("Found unknown loot table(s) for \"%s\": %s", Registry.ENTITY_TYPE.getKey(entityType).toString(), unknownTables));
+                        Mobifier.LOGGER.error(String.format("Found unknown loot table(s) for \"%s\": %s", Registry.ENTITY_TYPE.getKey(entityType), unknownTables));
                     }
                     mobifiersPassed++;
                 }

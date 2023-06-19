@@ -103,10 +103,10 @@ public class MobifierConfig {
                 Mobifier.LOGGER.error(e.toString());
             }
         }
-        Mobifier.LOGGER.info(String.format("\"%s\" was read.", path.toString()));
+        Mobifier.LOGGER.info(String.format("\"%s\" was read.", path));
 
         try {
-            return CODEC.decode(JsonOps.INSTANCE, new JsonParser().parse(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
+            return CODEC.decode(JsonOps.INSTANCE, JsonParser.parseReader(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
