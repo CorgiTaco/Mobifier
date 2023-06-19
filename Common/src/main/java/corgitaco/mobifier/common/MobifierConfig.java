@@ -130,9 +130,7 @@ public class MobifierConfig {
         return DataResult.success(result);
     }, entityTypeListMap -> {
         Map<String, List<MobMobifier>> result = new HashMap<>();
-        entityTypeListMap.forEach((type, mobMobifiers) -> {
-            result.put(Registry.ENTITY_TYPE.getKey(type).toString(), mobMobifiers);
-        });
+        entityTypeListMap.forEach((type, mobMobifiers) -> result.put(Registry.ENTITY_TYPE.getKey(type).toString(), mobMobifiers));
         return result;
     });
 

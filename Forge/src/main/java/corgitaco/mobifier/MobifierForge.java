@@ -4,7 +4,6 @@ import corgitaco.mobifier.network.ForgeNetworkHandler;
 import corgitaco.mobifier.util.ModLoaderContext;
 import corgitaco.mobifier.util.S2CPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -18,8 +17,7 @@ import java.nio.file.Path;
 public class MobifierForge {
 
     public MobifierForge() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         ModLoaderContext.setInstance(getModLoaderData());
     }
 

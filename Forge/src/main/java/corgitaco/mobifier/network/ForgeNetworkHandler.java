@@ -48,9 +48,7 @@ public class ForgeNetworkHandler {
     public static <T extends S2CPacket> void handle(T packet, Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
         if (context.getDirection().getReceptionSide().isClient()) {
-            context.enqueueWork(() -> {
-                Client.clientHandle(packet);
-            });
+            context.enqueueWork(() -> Client.clientHandle(packet));
             context.setPacketHandled(true);
         }
     }
