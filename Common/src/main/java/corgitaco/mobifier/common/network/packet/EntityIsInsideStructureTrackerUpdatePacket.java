@@ -1,7 +1,7 @@
 package corgitaco.mobifier.common.network.packet;
 
 
-import corgitaco.mobifier.common.player.IsInsideStructureTracker;
+import corgitaco.corgilib.entity.IsInsideStructureTracker;
 import corgitaco.mobifier.util.S2CPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
