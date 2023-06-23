@@ -1,9 +1,9 @@
 package corgitaco.mobifier.mixin;
 
+import corgitaco.corgilib.entity.condition.ConditionContext;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobMobifier;
 import corgitaco.mobifier.common.MobifierConfig;
-import corgitaco.mobifier.common.condition.ConditionContext;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

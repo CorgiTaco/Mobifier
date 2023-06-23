@@ -1,6 +1,8 @@
 package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
+import corgitaco.corgilib.entity.condition.*;
+import corgitaco.corgilib.entity.condition.MobifiersPassed;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobifierRegistry;
 import net.minecraft.core.Registry;
@@ -43,7 +45,8 @@ public interface Condition {
         register("has_effect", HasEffectCondition.CODEC);
     }
 
-    static void register(String id, Codec<? extends Condition> codec) {
-        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, id), codec);
+    @SuppressWarnings("unchecked")
+    static void register(String id, Codec<?> codec) {
+        Registry.register(MobifierRegistry.CONDITION, new ResourceLocation(Mobifier.MOD_ID, id), (Codec<? extends Condition>) codec);
     }
 }

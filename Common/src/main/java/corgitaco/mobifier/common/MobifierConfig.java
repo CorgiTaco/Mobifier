@@ -8,9 +8,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import corgitaco.corgilib.entity.condition.BiomeTagCondition;
+import corgitaco.corgilib.entity.condition.InDimensionCondition;
 import corgitaco.mobifier.Mobifier;
-import corgitaco.mobifier.common.condition.BiomeTagCondition;
-import corgitaco.mobifier.common.condition.InDimensionCondition;
+import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.MobifierUtil;
 import corgitaco.mobifier.mixin.access.AttributeSupplierAccess;
@@ -46,8 +47,8 @@ public class MobifierConfig {
                 }
 
             }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
-                list1.add(new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)));
-                list1.add(new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)));
+                list1.add((Condition) new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)).codec());
+                list1.add((Condition) new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)).codec());
             })));
         }));
         Registry.ENTITY_TYPE.forEach(entityType -> {
