@@ -2,7 +2,6 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import corgitaco.corgilib.entity.condition.*;
-import corgitaco.corgilib.entity.condition.MobifiersPassed;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobifierRegistry;
 import net.minecraft.core.Registry;

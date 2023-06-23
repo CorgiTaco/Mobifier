@@ -35,32 +35,28 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class MobifierConfig {
+public record MobifierConfig(boolean dumpRegistries, Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
 
     public static MobifierConfig INSTANCE = null;
 
-    public static final Supplier<MobifierConfig> DEFAULT = () -> new MobifierConfig(true,Util.make(new Object2ObjectOpenHashMap<>(), map -> {
-        map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
-            list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
-                for (Attribute attribute : Registry.ATTRIBUTE) {
-                    map1.put(attribute, new DoubleModifier("*2"));
-                }
+    public static final Supplier<MobifierConfig> DEFAULT = () -> new MobifierConfig(true, Util.make(new Object2ObjectOpenHashMap<>(), map -> {
+        map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+            for (Attribute attribute : Registry.ATTRIBUTE) {
+                map1.put(attribute, new DoubleModifier("*2"));
+            }
 
-            }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
-                list1.add((Condition) new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)).codec());
-                list1.add((Condition) new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)).codec());
-            })));
-        }));
+        }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
+            list1.add((Condition) new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)).codec());
+            list1.add((Condition) new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)).codec());
+        })))));
         Registry.ENTITY_TYPE.forEach(entityType -> {
             if (entityType != EntityType.HUSK) {
-                map.put(entityType, Util.make(new ArrayList<>(), list -> {
-                    list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
-                        for (Attribute attribute : getAttributesForEntity(entityType)) {
-                            map1.put(attribute, new DoubleModifier("*1"));
-                        }
+                map.put(entityType, Util.make(new ArrayList<>(), list -> list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+                    for (Attribute attribute : getAttributesForEntity(entityType)) {
+                        map1.put(attribute, new DoubleModifier("*1"));
+                    }
 
-                    }), true, new ArrayList<>(), new ArrayList<>()));
-                }));
+                }), true, new ArrayList<>(), new ArrayList<>()))));
             }
         });
     }));
@@ -135,25 +131,8 @@ public class MobifierConfig {
         return result;
     });
 
-    public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
+    public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
             CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
-        ).apply(builder, MobifierConfig::new);
-    });
+    ).apply(builder, MobifierConfig::new));
 
-    private final boolean dumpRegistries;
-    private final Map<EntityType<?>, List<MobMobifier>> mobMobifierMap;
-
-    public MobifierConfig(boolean dumpRegistries, Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
-        this.dumpRegistries = dumpRegistries;
-        this.mobMobifierMap = mobMobifierMap;
-    }
-
-    public Map<EntityType<?>, List<MobMobifier>> getMobMobifierMap() {
-        return mobMobifierMap;
-    }
-
-    public boolean isDumpRegistries() {
-        return dumpRegistries;
-    }
 }
