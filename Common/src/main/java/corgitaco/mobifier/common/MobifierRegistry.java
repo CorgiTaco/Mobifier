@@ -2,8 +2,8 @@ package corgitaco.mobifier.common;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
+import corgitaco.corgilib.entity.condition.Condition;
 import corgitaco.mobifier.Mobifier;
-import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.mobifier.mixin.access.RegistryAccess;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

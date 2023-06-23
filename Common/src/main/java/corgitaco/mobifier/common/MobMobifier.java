@@ -2,8 +2,8 @@ package corgitaco.mobifier.common;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import corgitaco.corgilib.entity.condition.Condition;
 import corgitaco.corgilib.entity.condition.ConditionContext;
-import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.corgilib.serialization.codec.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.resources.ResourceLocation;

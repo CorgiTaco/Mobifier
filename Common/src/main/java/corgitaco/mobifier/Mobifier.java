@@ -1,6 +1,6 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.common.condition.Condition;
+import corgitaco.corgilib.entity.condition.Condition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
