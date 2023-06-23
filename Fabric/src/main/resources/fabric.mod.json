@@ -20,7 +20,7 @@
     "sources": "https://github.com/CorgiTaco/Mobifier"
   },
   "license": "LGPLv3",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/mobifier/mobifier.png",
   "environment": "*",
   "entrypoints": {
     "main": [
