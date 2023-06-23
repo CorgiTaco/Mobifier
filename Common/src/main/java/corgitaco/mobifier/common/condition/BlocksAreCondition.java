@@ -2,7 +2,7 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.mobifier.common.util.CodecUtil;
+import corgitaco.corgilib.serialization.codec.CodecUtil; 
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

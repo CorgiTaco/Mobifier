@@ -2,7 +2,7 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.mobifier.common.util.pair.LongPair;
+import corgitaco.corgilib.math.LongPair;
 
 import java.util.List;
 

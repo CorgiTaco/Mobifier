@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.mobifier.common.condition.Condition;
 import corgitaco.mobifier.common.condition.ConditionContext;
-import corgitaco.mobifier.common.util.CodecUtil;
+import corgitaco.corgilib.serialization.codec.CodecUtil;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;

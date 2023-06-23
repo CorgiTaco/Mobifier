@@ -2,7 +2,7 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.mobifier.common.util.comparator.DoubleComparator;
+import corgitaco.corgilib.comparator.DoubleComparator;
 
 public class MobifiersPassed implements Condition {
 

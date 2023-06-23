@@ -2,8 +2,8 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.mobifier.common.util.CodecUtil;
-import corgitaco.mobifier.common.util.comparator.DoubleComparator;
+import corgitaco.corgilib.comparator.DoubleComparator;
+import corgitaco.corgilib.serialization.codec.CodecUtil;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 

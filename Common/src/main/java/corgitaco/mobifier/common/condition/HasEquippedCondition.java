@@ -2,8 +2,8 @@ package corgitaco.mobifier.common.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.mobifier.common.util.CodecUtil;
-import corgitaco.mobifier.common.util.ItemStackCheck;
+import corgitaco.corgilib.entity.ItemStackCheck;
+import corgitaco.corgilib.serialization.codec.CodecUtil;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
