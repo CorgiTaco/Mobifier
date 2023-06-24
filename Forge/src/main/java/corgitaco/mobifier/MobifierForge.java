@@ -1,6 +1,7 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.network.ForgeNetworkHandler;
+import corgitaco.corgilib.network.ForgeNetworkHandler;
+import corgitaco.corgilib.network.Packet;
 import corgitaco.mobifier.util.ModLoaderContext;
 import corgitaco.mobifier.util.S2CPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +41,7 @@ public class MobifierForge {
 
             @Override
             public <P extends S2CPacket> void sendToClient(ServerPlayer player, P packet) {
-                ForgeNetworkHandler.sendToPlayer(player, packet);
+                ForgeNetworkHandler.sendToPlayer(player, (Packet) packet);
             }
         };
     }
