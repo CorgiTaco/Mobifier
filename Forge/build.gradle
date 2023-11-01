@@ -10,15 +10,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'org.parchmentmc:librarian:1.+'
         classpath group: 'gradle.plugin.com.modrinth.minotaur', name: 'Minotaur', version: '1.2.1'
     }
 }
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id "net.darkhax.curseforgegradle" version "1.0.7"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id "net.darkhax.curseforgegradle" version "1.1.16"
 }
 
 apply plugin: 'java'
@@ -28,7 +28,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 
-tasks.build.dependsOn(tasks.findByName("shadowJar"))
+tasks.build.dependsOn(shadowJar)
 
 configurations {
     shadow
@@ -62,7 +62,7 @@ mixin {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: "1.18.2-${parchment_version}-1.19"
+    mappings channel: 'parchment', version: "${minecraft_version}-${parchment_version}-${minecraft_version}"
 
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
         // This location is hardcoded in Forge and can not be changed.
@@ -77,8 +77,8 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Client'
             args "-mixin.config=${mod_id}.mixins.json", "-mixin.config=${mod_id}.forge.mixins.json"
-            def output = sourceSets.main.output;
-            def commonOutput = project(":Common").sourceSets.main.output;
+            def output = sourceSets.main.output
+            def commonOutput = project(":Common").sourceSets.main.output
             environment("MOD_CLASSES", [output.classesDirs.asPath, output.resourcesDir.path, commonOutput.classesDirs.asPath, commonOutput.resourcesDir.path].join(";"))
 
             mods {
@@ -94,8 +94,8 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Server'
             args "-mixin.config=${mod_id}.mixins.json", "-mixin.config=${mod_id}.forge.mixins.json"
-            def output = sourceSets.main.output;
-            def commonOutput = project(":Common").sourceSets.main.output;
+            def output = sourceSets.main.output
+            def commonOutput = project(":Common").sourceSets.main.output
             environment("MOD_CLASSES", [output.classesDirs.asPath, output.resourcesDir.path, commonOutput.classesDirs.asPath, commonOutput.resourcesDir.path].join(";"))
 
             mods {
@@ -112,8 +112,8 @@ minecraft {
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             taskName 'Data'
             args "-mixin.config=${mod_id}.mixins.json", "-mixin.config=${mod_id}.forge.mixins.json"
-            def output = sourceSets.main.output;
-            def commonOutput = project(":Common").sourceSets.main.output;
+            def output = sourceSets.main.output
+            def commonOutput = project(":Common").sourceSets.main.output
             environment("MOD_CLASSES", [output.classesDirs.asPath, output.resourcesDir.path, commonOutput.classesDirs.asPath, commonOutput.resourcesDir.path].join(";"))
 
             mods {
@@ -132,6 +132,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation fg.deobf("maven.modrinth:corgilib:${minecraft_version}-${corgilib_version}-forge")
 }
 
 tasks.withType(JavaCompile) {
@@ -166,9 +167,7 @@ publishing {
 }
 
 
-jar {
-    archiveClassifier.set('slim')
-}
+jar.archiveClassifier.set('slim')
 
 
 task forge_publishCurseForge(type: TaskPublishCurseForge) {

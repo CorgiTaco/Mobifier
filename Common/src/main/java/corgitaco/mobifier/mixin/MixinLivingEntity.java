@@ -1,9 +1,9 @@
 package corgitaco.mobifier.mixin;
 
+import corgitaco.corgilib.entity.condition.ConditionContext;
 import corgitaco.mobifier.Mobifier;
 import corgitaco.mobifier.common.MobMobifier;
 import corgitaco.mobifier.common.MobifierConfig;
-import corgitaco.mobifier.common.condition.ConditionContext;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +52,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
     private void multiplyXPDrop(CallbackInfo ci) {
-        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
+        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().mobMobifierMap();
         final EntityType<?> entityType = this.getType();
         int xpOrbReward = this.getExperienceReward();
         double totalValue = xpOrbReward;
@@ -60,7 +60,7 @@ public abstract class MixinLivingEntity extends Entity {
         if (mobifierForType.containsKey(entityType)) {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
-                    totalValue = mobMobifier.getXpMultiplier().apply(totalValue);
+                    totalValue = mobMobifier.xpMultiplier().apply(totalValue);
                     mobifiersPassed++;
                 }
             }
@@ -68,17 +68,16 @@ public abstract class MixinLivingEntity extends Entity {
         ExperienceOrb.award((ServerLevel) this.level, this.position(), (int) (totalValue - xpOrbReward));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Inject(method = "getAttributeValue", at = @At("RETURN"), cancellable = true)
     private void getValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
-        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
+        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().mobMobifierMap();
         final EntityType<?> entityType = this.getType();
         if (mobifierForType.containsKey(entityType)) {
             int mobifiersPassed = 0;
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
                     if (this.getAttributes().hasAttribute(attribute)) {
-                        final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.getAttributesMultipliers();
+                        final Map<Attribute, DoubleModifier> attributesMultipliers = mobMobifier.attributesMultipliers();
                         if (attributesMultipliers.containsKey(attribute)) {
                             cir.setReturnValue(attributesMultipliers.get(attribute).apply(cir.getReturnValueD()));
                         }
@@ -91,7 +90,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "dropFromLootTable", at = @At(value = "HEAD"), cancellable = true)
     private void modifyLootTable(DamageSource damageSource, boolean bl, CallbackInfo ci) {
-        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().getMobMobifierMap();
+        Map<EntityType<?>, List<MobMobifier>> mobifierForType = MobifierConfig.getConfig().mobMobifierMap();
         LootTables lootTables = this.level.getServer().getLootTables();
         if (lootTables == null) {
             return;
@@ -103,12 +102,12 @@ public abstract class MixinLivingEntity extends Entity {
             for (MobMobifier mobMobifier : mobifierForType.get(entityType)) {
                 if (mobMobifier.passes(new ConditionContext(this.level, (LivingEntity) (Object) this, this.isDeadOrDying(), mobifiersPassed))) {
                     // TODO: Maybe move this out from here so we aren't cancelling it per mobifier?
-                    if (!mobMobifier.isDropDefaultTable()) {
+                    if (!mobMobifier.dropDefaultTable()) {
                         ci.cancel();
                     }
 
                     StringBuilder unknownTablesBuilder = new StringBuilder();
-                    for (ResourceLocation lootTableLocation : mobMobifier.getDroppedTables()) {
+                    for (ResourceLocation lootTableLocation : mobMobifier.droppedTables()) {
                         if (lootTables.getIds().contains(lootTableLocation)) {
                             spawnItems(damageSource, bl, lootTableLocation, lootTables);
                         } else {
@@ -117,7 +116,7 @@ public abstract class MixinLivingEntity extends Entity {
                     }
                     final String unknownTables = unknownTablesBuilder.toString();
                     if (!unknownTables.isEmpty()) {
-                        Mobifier.LOGGER.error(String.format("Found unknown loot table(s) for \"%s\": %s", Registry.ENTITY_TYPE.getKey(entityType).toString(), unknownTables));
+                        Mobifier.LOGGER.error(String.format("Found unknown loot table(s) for \"%s\": %s", Registry.ENTITY_TYPE.getKey(entityType), unknownTables));
                     }
                     mobifiersPassed++;
                 }

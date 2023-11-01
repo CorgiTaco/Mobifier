@@ -8,9 +8,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import corgitaco.corgilib.entity.condition.BiomeTagCondition;
+import corgitaco.corgilib.entity.condition.InDimensionCondition;
 import corgitaco.mobifier.Mobifier;
-import corgitaco.mobifier.common.condition.BiomeTagCondition;
-import corgitaco.mobifier.common.condition.InDimensionCondition;
 import corgitaco.mobifier.common.util.DoubleModifier;
 import corgitaco.mobifier.common.util.MobifierUtil;
 import corgitaco.mobifier.mixin.access.AttributeSupplierAccess;
@@ -34,32 +34,28 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class MobifierConfig {
+public record MobifierConfig(boolean dumpRegistries, Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
 
     public static MobifierConfig INSTANCE = null;
 
-    public static final Supplier<MobifierConfig> DEFAULT = () -> new MobifierConfig(true,Util.make(new Object2ObjectOpenHashMap<>(), map -> {
-        map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> {
-            list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
-                for (Attribute attribute : Registry.ATTRIBUTE) {
-                    map1.put(attribute, new DoubleModifier("*2"));
-                }
+    public static final Supplier<MobifierConfig> DEFAULT = () -> new MobifierConfig(true, Util.make(new Object2ObjectOpenHashMap<>(), map -> {
+        map.put(EntityType.HUSK, Util.make(new ArrayList<>(), list -> list.add(new MobMobifier(new DoubleModifier("*2"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+            for (Attribute attribute : Registry.ATTRIBUTE) {
+                map1.put(attribute, new DoubleModifier("*2"));
+            }
 
-            }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
-                list1.add(new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)));
-                list1.add(new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)));
-            })));
-        }));
+        }), true, new ArrayList<>(), Util.make(new ArrayList<>(), (list1) -> {
+            list1.add(new BiomeTagCondition(ImmutableList.of(BiomeTags.HAS_DESERT_PYRAMID)));
+            list1.add(new InDimensionCondition(ImmutableList.of(Level.OVERWORLD)));
+        })))));
         Registry.ENTITY_TYPE.forEach(entityType -> {
             if (entityType != EntityType.HUSK) {
-                map.put(entityType, Util.make(new ArrayList<>(), list -> {
-                    list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
-                        for (Attribute attribute : getAttributesForEntity(entityType)) {
-                            map1.put(attribute, new DoubleModifier("*1"));
-                        }
+                map.put(entityType, Util.make(new ArrayList<>(), list -> list.add(new MobMobifier(new DoubleModifier("*1"), Util.make(new Object2ObjectOpenHashMap<>(), map1 -> {
+                    for (Attribute attribute : getAttributesForEntity(entityType)) {
+                        map1.put(attribute, new DoubleModifier("*1"));
+                    }
 
-                    }), true, new ArrayList<>(), new ArrayList<>()));
-                }));
+                }), true, new ArrayList<>(), new ArrayList<>()))));
             }
         });
     }));
@@ -103,10 +99,10 @@ public class MobifierConfig {
                 Mobifier.LOGGER.error(e.toString());
             }
         }
-        Mobifier.LOGGER.info(String.format("\"%s\" was read.", path.toString()));
+        Mobifier.LOGGER.info(String.format("\"%s\" was read.", path));
 
         try {
-            return CODEC.decode(JsonOps.INSTANCE, new JsonParser().parse(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
+            return CODEC.decode(JsonOps.INSTANCE, JsonParser.parseReader(new FileReader(path.toFile()))).result().orElseThrow(RuntimeException::new).getFirst();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -130,31 +126,12 @@ public class MobifierConfig {
         return DataResult.success(result);
     }, entityTypeListMap -> {
         Map<String, List<MobMobifier>> result = new HashMap<>();
-        entityTypeListMap.forEach((type, mobMobifiers) -> {
-            result.put(Registry.ENTITY_TYPE.getKey(type).toString(), mobMobifiers);
-        });
+        entityTypeListMap.forEach((type, mobMobifiers) -> result.put(Registry.ENTITY_TYPE.getKey(type).toString(), mobMobifiers));
         return result;
     });
 
-    public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> {
-        return builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
+    public static final Codec<MobifierConfig> CODEC = RecordCodecBuilder.create(builder -> builder.group(Codec.BOOL.optionalFieldOf("dump_registries", false).forGetter(mobifierConfig -> mobifierConfig.dumpRegistries),
             CATEGORY_OR_ENTITY_TYPE_MAP_CODEC.fieldOf("mobifier").forGetter(mobifierConfig -> mobifierConfig.mobMobifierMap)
-        ).apply(builder, MobifierConfig::new);
-    });
+    ).apply(builder, MobifierConfig::new));
 
-    private final boolean dumpRegistries;
-    private final Map<EntityType<?>, List<MobMobifier>> mobMobifierMap;
-
-    public MobifierConfig(boolean dumpRegistries, Map<EntityType<?>, List<MobMobifier>> mobMobifierMap) {
-        this.dumpRegistries = dumpRegistries;
-        this.mobMobifierMap = mobMobifierMap;
-    }
-
-    public Map<EntityType<?>, List<MobMobifier>> getMobMobifierMap() {
-        return mobMobifierMap;
-    }
-
-    public boolean isDumpRegistries() {
-        return dumpRegistries;
-    }
 }

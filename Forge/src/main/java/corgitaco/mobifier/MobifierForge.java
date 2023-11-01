@@ -1,10 +1,10 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.network.ForgeNetworkHandler;
+import corgitaco.corgilib.network.ForgeNetworkHandler;
+import corgitaco.corgilib.network.Packet;
 import corgitaco.mobifier.util.ModLoaderContext;
 import corgitaco.mobifier.util.S2CPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -18,8 +18,7 @@ import java.nio.file.Path;
 public class MobifierForge {
 
     public MobifierForge() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         ModLoaderContext.setInstance(getModLoaderData());
     }
 
@@ -42,7 +41,7 @@ public class MobifierForge {
 
             @Override
             public <P extends S2CPacket> void sendToClient(ServerPlayer player, P packet) {
-                ForgeNetworkHandler.sendToPlayer(player, packet);
+                ForgeNetworkHandler.sendToPlayer(player, (Packet) packet);
             }
         };
     }

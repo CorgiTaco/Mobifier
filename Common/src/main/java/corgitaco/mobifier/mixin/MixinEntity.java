@@ -1,6 +1,6 @@
 package corgitaco.mobifier.mixin;
 
-import corgitaco.mobifier.common.player.IsInsideStructureTracker;
+import corgitaco.corgilib.entity.IsInsideStructureTracker;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 

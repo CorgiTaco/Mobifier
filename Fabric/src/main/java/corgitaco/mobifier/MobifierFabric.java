@@ -1,6 +1,7 @@
 package corgitaco.mobifier;
 
-import corgitaco.mobifier.network.FabricNetworkHandler;
+import corgitaco.corgilib.network.FabricNetworkHandler;
+import corgitaco.corgilib.network.Packet;
 import corgitaco.mobifier.util.ModLoaderContext;
 import corgitaco.mobifier.util.S2CPacket;
 import net.fabricmc.api.ModInitializer;
@@ -32,7 +33,7 @@ public class MobifierFabric implements ModInitializer {
 
             @Override
             public <P extends S2CPacket> void sendToClient(ServerPlayer player, P packet) {
-                FabricNetworkHandler.sendToPlayer(player, packet);
+                FabricNetworkHandler.sendToPlayer(player, (Packet) packet);
             }
         };
     }

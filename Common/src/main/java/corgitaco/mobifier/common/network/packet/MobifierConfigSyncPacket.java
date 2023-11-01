@@ -21,7 +21,6 @@ public class MobifierConfigSyncPacket implements S2CPacket {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeWithCodec(MobifierConfig.CODEC, this.config);
-
     }
 
     @Override

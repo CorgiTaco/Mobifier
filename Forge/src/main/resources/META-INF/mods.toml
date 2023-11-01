@@ -7,8 +7,8 @@ modId = "mobifier"
 version = "1.0.3"
 displayName = "Mobifier"
 displayURL = ""
-logoFile = "icon.png"
-credits = ""
+logoFile = "assets/mobifier/mobifier.png"
+credits = "J.T. McQuigg (JT122406)"
 authors = "Corgi Taco"
 description = '''
 Edit and tweak mob loot tables + attributes.
@@ -18,4 +18,11 @@ modId = "forge"
 mandatory = true
 versionRange = "[40.0.0,)"
 ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.mobifier]]
+modId = "corgilib"
+mandatory = true
+versionRange = "[1.0.0.34,)"
+ordering = "BEFORE"
 side = "BOTH"

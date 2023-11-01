@@ -31,7 +31,7 @@ public class MixinMinecraftServer {
 
     @Inject(at = @At("RETURN"), method = "<init>")
     private void handleModifiersConfig(Thread $$0, LevelStorageSource.LevelStorageAccess $$1, PackRepository $$2, WorldStem $$3, Proxy $$4, DataFixer $$5, Services $$6, ChunkProgressListenerFactory $$7, CallbackInfo ci) {
-        if (MobifierConfig.getConfig(true).isDumpRegistries()) {
+        if (MobifierConfig.getConfig(true).dumpRegistries()) {
             StringBuilder filetxt = new StringBuilder();
             for (Registry<?> registry : Registry.REGISTRY) {
                 filetxt.append(registry.key()).append("\n");
